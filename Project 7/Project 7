@@ -1,0 +1,1498 @@
+Project 7:
+//
+//  EADItem.h
+//  HomePwner
+//
+//  Created by Ryan on 7/14/15.
+//  Copyright (c) 2015 Docs Playground. All rights reserved.
+//
+
+#import <Foundation/Foundation.h>
+#import <CoreData/CoreData.h>
+
+
+@interface EADItem : NSManagedObject
+
+@property (nonatomic, retain) NSString * itemName;
+@property (nonatomic, retain) NSString * serialNumber;
+@property (nonatomic) int valueInDollars;
+@property (nonatomic, retain) NSDate * dateCreated;
+@property (nonatomic, retain) NSString * itemKey;
+@property (nonatomic, retain) UIImage * thumbnail;
+@property (nonatomic) double orderingValue;
+@property (nonatomic, retain) NSManagedObject *assetType;
+@property (nonatomic, retain) NSManagedObject *assetLocation;
+
+
+- (void)setThumbnailFromImage:(UIImage *)image;
+
+@end
+//
+//  EADItem.m
+//  HomePwner
+//
+//  Created by Ryan on 7/14/15.
+//  Copyright (c) 2015 Docs Playground. All rights reserved.
+//
+
+#import "EADItem.h"
+
+
+@implementation EADItem
+
+@dynamic itemName;
+@dynamic serialNumber;
+@dynamic valueInDollars;
+@dynamic dateCreated;
+@dynamic itemKey;
+@dynamic thumbnail;
+@dynamic orderingValue;
+@dynamic assetType;
+@dynamic assetLocation;
+
+- (void)setThumbnailFromImage:(UIImage *)image
+{
+    CGSize origImageSize = image.size;
+
+    CGRect newRect = CGRectMake(0, 0, 40, 40);
+
+    float ratio = MAX(newRect.size.width / origImageSize.width,
+                      newRect.size.height / origImageSize.height);
+
+    UIGraphicsBeginImageContextWithOptions(newRect.size, NO, 0.0);
+
+    UIBezierPath *path = [UIBezierPath bezierPathWithRoundedRect:newRect
+                                                    cornerRadius:5.0];
+    [path addClip];
+
+    CGRect projectRect;
+    projectRect.size.width = ratio * origImageSize.width;
+    projectRect.size.height = ratio * origImageSize.height;
+    projectRect.origin.x = (newRect.size.width - projectRect.size.width) / 2.0;
+    projectRect.origin.y = (newRect.size.height - projectRect.size.height) / 2.0;
+
+    [image drawInRect:projectRect];
+
+    UIImage *smallImage = UIGraphicsGetImageFromCurrentImageContext();
+    self.thumbnail = smallImage;
+
+    UIGraphicsEndImageContext();
+}
+
+- (void)awakeFromInsert
+{
+    [super awakeFromInsert];
+
+    self.dateCreated = [NSDate date];
+
+    // Create an NSUUID object - and get its string representation
+    NSUUID *uuid = [[NSUUID alloc] init];
+    NSString *key = [uuid UUIDString];
+    self.itemKey = key;
+}
+
+@end
+//
+//  EADAppDelegate.h
+//  HomePwner
+//
+//  Created by Ryan on 7/14/15.
+//  Copyright (c) 2015 Docs Playground. All rights reserved.
+//
+
+#import <UIKit/UIKit.h>
+
+@interface EADAppDelegate : UIResponder <UIApplicationDelegate>
+
+@property (strong, nonatomic) UIWindow *window;
+
+@end
+//
+//  EADAppDelegate.m
+//  HomePwner
+//
+//  Created by Ryan on 7/14/15.
+//  Copyright (c) 2015 Docs Playground. All rights reserved.
+//
+
+#import "EADAppDelegate.h"
+#import "EADItemsViewController.h"
+#import "EADItemStore.h"
+
+@implementation EADAppDelegate
+
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
+{
+    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    // Override point for customization after application launch.
+
+    // Create a EADItemsViewController
+    EADItemsViewController *itemsViewController = [[EADItemsViewController alloc] init];
+
+    // Create an instance of a UINavigationController
+    // its stack contains only itemsViewController
+    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:itemsViewController];
+
+    // Place navigation controller's view in the window hierarchy
+    self.window.rootViewController = navController;
+
+    self.window.backgroundColor = [UIColor whiteColor];
+    [self.window makeKeyAndVisible];
+    return YES;
+}
+
+- (void)applicationWillResignActive:(UIApplication *)application
+{
+    // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
+    // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
+}
+
+- (void)applicationDidEnterBackground:(UIApplication *)application
+{
+    BOOL success = [[EADItemStore sharedStore] saveChanges];
+    if (success) {
+        NSLog(@"Saved all of the EADItems");
+    } else {
+        NSLog(@"Could not save any of the EADItems");
+    }
+}
+
+- (void)applicationWillEnterForeground:(UIApplication *)application
+{
+    // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
+}
+
+- (void)applicationDidBecomeActive:(UIApplication *)application
+{
+    // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+}
+
+- (void)applicationWillTerminate:(UIApplication *)application
+{
+    // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+}
+
+@end
+//
+//  EADImageTransformer.h
+//  HomePwner
+//
+//  Created by Ryan on 7/14/15.
+//  Copyright (c) 2015 Docs Playground. All rights reserved.
+//
+
+#import <Foundation/Foundation.h>
+
+@interface EADImageTransformer : NSValueTransformer
+
+@end
+//
+//  EADImageTransformer.m
+//  HomePwner
+//
+//  Created by Ryan on 7/14/15.
+//  Copyright (c) 2015 Docs Playground. All rights reserved.
+//
+
+#import "EADImageTransformer.h"
+
+@implementation EADImageTransformer
+
++ (Class)transformedValueClass
+{
+    return [UIImage class];
+}
+
+- (id)transformedValue:(id)value
+{
+    if (!value) {
+        return nil;
+    }
+
+    if ([value isKindOfClass:[NSData class]]) {
+        return value;
+    }
+
+    return UIImagePNGRepresentation(value);
+}
+
+- (id)reverseTransformedValue:(id)value
+{
+    return [UIImage imageWithData:value];
+}
+
+@end
+//
+//  EADItemStore.h
+//  HomePwner
+//
+//  Created by Ryan on 7/14/15.
+//  Copyright (c) 2015 Docs Playground. All rights reserved.
+//
+
+#import <Foundation/Foundation.h>
+
+@class EADItem;
+
+@interface EADItemStore : NSObject
+
+@property (nonatomic, readonly) NSArray *allItems;
+
+// Notice that this is a class method and prefixed with a + instead of a -
++ (instancetype)sharedStore;
+- (EADItem *)createItem;
+- (void)removeItem:(EADItem *)item;
+
+- (void)moveItemAtIndex:(NSInteger)fromIndex
+                toIndex:(NSInteger)toIndex;
+
+- (BOOL)saveChanges;
+
+- (NSArray *)allAssetTypes;
+-(NSArray *)allRoomLocations;
+
+@end
+//
+//  EADItemStore.m
+//  HomePwner
+//
+//  Created by Ryan on 7/14/15.
+//  Copyright (c) 2015 Docs Playground. All rights reserved.
+//
+
+#import "EADItemStore.h"
+#import "EADItem.h"
+#import "EADImageStore.h"
+@import CoreData;
+
+@interface EADItemStore ()
+
+@property (nonatomic) NSMutableArray *privateItems;
+@property (nonatomic, strong) NSMutableArray *allAssetTypes;
+@property (nonatomic, strong) NSMutableArray *allRoomLocations;
+@property (nonatomic, strong) NSManagedObjectContext *context;
+@property (nonatomic, strong) NSManagedObjectModel *model;
+
+@end
+
+@implementation EADItemStore
+
++ (instancetype)sharedStore
+{
+    static EADItemStore *sharedStore;
+
+    // Do I need to create a sharedStore?
+    if (!sharedStore) {
+        sharedStore = [[self alloc] initPrivate];
+    }
+
+    return sharedStore;
+}
+
+// If a programmer calls [[EADItemStore alloc] init], let him
+// know the error of his ways
+- (instancetype)init
+{
+    @throw [NSException exceptionWithName:@"Singleton"
+                                   reason:@"Use +[EADItemStore sharedStore]"
+                                 userInfo:nil];
+    return nil;
+}
+
+// Here is the real (secret) initializer
+- (instancetype)initPrivate
+{
+    self = [super init];
+    if (self) {
+        // Read in Homepwner.xcdatamodeld
+        _model = [NSManagedObjectModel mergedModelFromBundles:nil];
+
+        NSPersistentStoreCoordinator *psc = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:_model];
+
+        // Where does the SQLite file go?
+        NSString *path = self.itemArchivePath;
+        NSURL *storeURL = [NSURL fileURLWithPath:path];
+
+        NSError *error;
+        if (![psc addPersistentStoreWithType:NSSQLiteStoreType
+                               configuration:nil
+                                         URL:storeURL
+                                     options:nil
+                                       error:&error]) {
+            @throw [NSException exceptionWithName:@"OpenFailure"
+                                           reason:[error localizedDescription]
+                                         userInfo:nil];
+        }
+
+        // Create the managed object context
+        _context = [[NSManagedObjectContext alloc] init];
+        _context.persistentStoreCoordinator = psc;
+
+        [self loadAllItems];
+    }
+    return self;
+}
+
+- (NSString *)itemArchivePath
+{
+    // Make sure that the first argument is NSDocumentDirectory
+    // and not NSDocumentationDirectory
+    NSArray *documentDirectories = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+
+    // Get the one document directory from that list
+    NSString *documentDirectory = [documentDirectories firstObject];
+
+    return [documentDirectory stringByAppendingPathComponent:@"store.data"];
+}
+
+- (BOOL)saveChanges
+{
+    NSError *error;
+    BOOL successful = [self.context save:&error];
+    if (!successful) {
+        NSLog(@"Error saving: %@", [error localizedDescription]);
+    }
+    return successful;
+}
+
+- (void)loadAllItems
+{
+    if (!self.privateItems) {
+        NSFetchRequest *request = [[NSFetchRequest alloc] init];
+
+        NSEntityDescription *e = [NSEntityDescription entityForName:@"EADItem"
+                                             inManagedObjectContext:self.context];
+
+        request.entity = e;
+
+        NSSortDescriptor *sd = [NSSortDescriptor
+                                sortDescriptorWithKey:@"orderingValue"
+                                ascending:YES];
+
+        request.sortDescriptors = @[sd];
+
+        NSError *error;
+        NSArray *result = [self.context executeFetchRequest:request error:&error];
+        if (!result) {
+            [NSException raise:@"Fetch failed"
+                        format:@"Reason: %@", [error localizedDescription]];
+        }
+
+        self.privateItems = [[NSMutableArray alloc] initWithArray:result];
+    }
+}
+
+- (NSArray *)allItems
+{
+    return [self.privateItems copy];
+}
+
+- (EADItem *)createItem
+{
+    double order;
+    if ([self.allItems count] == 0) {
+        order = 1.0;
+    } else {
+        order = [[self.privateItems lastObject] orderingValue] + 1.0;
+    }
+    NSLog(@"Adding after %d items, order = %.2f", [self.privateItems count], order);
+
+    EADItem *item = [NSEntityDescription insertNewObjectForEntityForName:@"EADItem"
+                                                  inManagedObjectContext:self.context];
+
+    item.orderingValue = order;
+
+    [self.privateItems addObject:item];
+
+    return item;
+}
+
+- (void)removeItem:(EADItem *)item
+{
+    NSString *key = item.itemKey;
+    if (key) {
+        [[EADImageStore sharedStore] deleteImageForKey:key];
+    }
+
+    [self.context deleteObject:item];
+    [self.privateItems removeObjectIdenticalTo:item];
+}
+
+- (void)moveItemAtIndex:(NSInteger)fromIndex
+                toIndex:(NSInteger)toIndex
+{
+    if (fromIndex == toIndex) {
+        return;
+    }
+    // Get pointer to object being moved so you can re-insert it
+    EADItem *item = self.privateItems[fromIndex];
+
+    // Remove item from array
+    [self.privateItems removeObjectAtIndex:fromIndex];
+
+    // Insert item in array at new location
+    [self.privateItems insertObject:item atIndex:toIndex];
+
+    // Computing a new orderValue for the object that was moved
+    double lowerBound = 0.0;
+
+    // Is there an object before it in the array?
+    if (toIndex > 0) {
+        lowerBound = [self.privateItems[(toIndex - 1)] orderingValue];
+    } else {
+        lowerBound = [self.privateItems[1] orderingValue] - 2.0;
+    }
+
+    double upperBound = 0.0;
+
+    // Is there an object after it in the array?
+    if (toIndex < [self.privateItems count] - 1) {
+        upperBound = [self.privateItems[(toIndex + 1)] orderingValue];
+    } else {
+        upperBound = [self.privateItems[(toIndex - 1)] orderingValue] + 2.0;
+    }
+
+    double newOrderValue = (lowerBound + upperBound) / 2.0;
+
+    NSLog(@"moving to order %f", newOrderValue);
+    item.orderingValue = newOrderValue;
+}
+
+- (NSArray *)allAssetTypes
+{
+    if (!_allAssetTypes) {
+        NSFetchRequest *request = [[NSFetchRequest alloc] init];
+
+        NSEntityDescription *e = [NSEntityDescription entityForName:@"EADAssetType"
+                                             inManagedObjectContext:self.context];
+        request.entity = e;
+
+        NSError *error = nil;
+        NSArray *result = [self.context executeFetchRequest:request error:&error];
+        if (!result) {
+            [NSException raise:@"Fetch failed"
+                        format:@"Reason: %@", [error localizedDescription]];
+        }
+        _allAssetTypes = [result mutableCopy];
+    }
+
+    // Is this the first time the program is being run?
+    if ([_allAssetTypes count] == 0) {
+        NSManagedObject *type;
+
+        type = [NSEntityDescription insertNewObjectForEntityForName:@"EADAssetType"
+                                             inManagedObjectContext:self.context];
+        [type setValue:@"Furniture" forKey:@"label"];
+        [_allAssetTypes addObject:type];
+
+        type = [NSEntityDescription insertNewObjectForEntityForName:@"EADAssetType"
+                                             inManagedObjectContext:self.context];
+        [type setValue:@"Jewelry" forKey:@"label"];
+        [_allAssetTypes addObject:type];
+
+        type = [NSEntityDescription insertNewObjectForEntityForName:@"EADAssetType"
+                                             inManagedObjectContext:self.context];
+        [type setValue:@"Electronics" forKey:@"label"];
+        [_allAssetTypes addObject:type];
+
+    }
+    return _allAssetTypes;
+}
+- (NSArray *) allRoomLocations
+{
+    if (!_allRoomLocations) {
+        NSFetchRequest *request = [[NSFetchRequest alloc] init];
+        
+        NSEntityDescription *e = [NSEntityDescription entityForName:@"EADAssetLocation"
+                                             inManagedObjectContext:self.context];
+        request.entity = e;
+        
+        NSError *error = nil;
+        NSArray *result = [self.context executeFetchRequest:request error:&error];
+        if (!result) {
+            [NSException raise:@"Fetch failed"
+                        format:@"Reason: %@", [error localizedDescription]];
+        }
+        _allRoomLocations = [result mutableCopy];
+    }
+    
+    if ([_allRoomLocations count] == 0) {
+        NSManagedObject *type;
+        
+        type = [NSEntityDescription insertNewObjectForEntityForName:@"EADAssetLocation"
+                                             inManagedObjectContext:self.context];
+        [type setValue:@"Den" forKey:@"roomLocation"];
+        [_allRoomLocations addObject:type];
+        
+        type = [NSEntityDescription insertNewObjectForEntityForName:@"EADAssetLocation"
+                                             inManagedObjectContext:self.context];
+        [type setValue:@"Family Room" forKey:@"roomLocation"];
+        [_allRoomLocations addObject:type];
+        
+        type = [NSEntityDescription insertNewObjectForEntityForName:@"EADAssetLocation"
+                                             inManagedObjectContext:self.context];
+        [type setValue:@"Bed Room" forKey:@"roomLocation"];
+        [_allRoomLocations addObject:type];
+        
+        type = [NSEntityDescription insertNewObjectForEntityForName:@"EADAssetLocation"
+                                             inManagedObjectContext:self.context];
+        [type setValue:@"Kitchen" forKey:@"roomLocation"];
+        [_allRoomLocations addObject:type];
+        
+    }
+    return _allRoomLocations;
+
+}
+
+@end
+//
+//  EADItemsViewController.h
+//  HomePwner
+//
+//  Created by Ryan on 7/14/15.
+//  Copyright (c) 2015 Docs Playground. All rights reserved.
+//
+
+#import <UIKit/UIKit.h>
+
+@interface EADItemsViewController : UITableViewController
+
+@end
+//
+//  EADItemsViewController.m
+//  HomePwner
+//
+//  Created by Ryan on 7/14/15.
+//  Copyright (c) 2015 Docs Playground. All rights reserved.
+//
+
+#import "EADItemsViewController.h"
+#import "EADDetailViewController.h"
+#import "EADItemStore.h"
+#import "EADItem.h"
+#import "EADItemCell.h"
+#import "EADImageStore.h"
+#import "EADImageViewController.h"
+
+@interface EADItemsViewController () <UIPopoverControllerDelegate>
+
+@property (nonatomic, strong) UIPopoverController *imagePopover;
+
+@end
+
+@implementation EADItemsViewController
+
+- (instancetype)init
+{
+    // Call the superclass's designated initializer
+    self = [super initWithStyle:UITableViewStylePlain];
+    if (self) {
+        UINavigationItem *navItem = self.navigationItem;
+        navItem.title = @"Homepwner";
+
+        // Create a new bar button item that will send
+        // addNewItem: to EADItemsViewController
+        UIBarButtonItem *bbi = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
+                                                                             target:self
+                                                                             action:@selector(addNewItem:)];
+
+        // Set this bar button item as the right item in the navigationItem
+        navItem.rightBarButtonItem = bbi;
+
+        navItem.leftBarButtonItem = self.editButtonItem;
+
+        NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
+        [nc addObserver:self
+               selector:@selector(updateTableViewForDynamicTypeSize)
+                   name:UIContentSizeCategoryDidChangeNotification
+                 object:nil];
+    }
+    return self;
+}
+
+- (void)dealloc
+{
+    NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
+    [nc removeObserver:self];
+}
+
+- (instancetype)initWithStyle:(UITableViewStyle)style
+{
+    return [self init];
+}
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+
+    // Load the NIB file
+    UINib *nib = [UINib nibWithNibName:@"EADItemCell" bundle:nil];
+
+    // Register this NIB, which contains the cell
+    [self.tableView registerNib:nib
+         forCellReuseIdentifier:@"EADItemCell"];
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+
+    [self updateTableViewForDynamicTypeSize];
+}
+
+- (void)updateTableViewForDynamicTypeSize
+{
+    static NSDictionary *cellHeightDictionary;
+
+    if (!cellHeightDictionary) {
+        cellHeightDictionary = @{ UIContentSizeCategoryExtraSmall : @44,
+                                  UIContentSizeCategorySmall : @44,
+                                  UIContentSizeCategoryMedium : @44,
+                                  UIContentSizeCategoryLarge : @44,
+                                  UIContentSizeCategoryExtraLarge : @55,
+                                  UIContentSizeCategoryExtraExtraLarge : @65,
+                                  UIContentSizeCategoryExtraExtraExtraLarge : @75 };
+    }
+
+    NSString *userSize = [[UIApplication sharedApplication] preferredContentSizeCategory];
+
+    NSNumber *cellHeight = cellHeightDictionary[userSize];
+    [self.tableView setRowHeight:cellHeight.floatValue];
+    [self.tableView reloadData];
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    return [[[EADItemStore sharedStore] allItems] count];
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    // Get a new or recycled cell
+    EADItemCell *cell = [tableView dequeueReusableCellWithIdentifier:@"EADItemCell" forIndexPath:indexPath];
+
+    // Set the text on the cell with the description of the item
+    // that is at the nth index of items, where n = row this cell
+    // will appear in on the tableview
+    NSArray *items = [[EADItemStore sharedStore] allItems];
+    EADItem *item = items[indexPath.row];
+
+    // Configure the cell with the EADItem
+    cell.nameLabel.text = item.itemName;
+    cell.serialNumberLabel.text = item.serialNumber;
+    cell.valueLabel.text = [NSString stringWithFormat:@"$%d", item.valueInDollars];
+    cell.thumbnailView.image = item.thumbnail;
+
+    __weak EADItemCell *weakCell = cell;
+
+    cell.actionBlock = ^{
+        NSLog(@"Going to show image for %@", item);
+
+        EADItemCell *strongCell = weakCell;
+
+        if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad) {
+            NSString *itemKey = item.itemKey;
+            // If there is no image, we don't need to display anything
+            UIImage *img = [[EADImageStore sharedStore] imageForKey:itemKey];
+            if (!img) {
+                return; }
+            // Make a rectangle for the frame of the thumbnail relative to
+            // our table view
+            CGRect rect = [self.view convertRect:strongCell.thumbnailView.bounds
+                                        fromView:strongCell.thumbnailView];
+            // Create a new EADImageViewController and set its image
+            EADImageViewController *ivc = [[EADImageViewController alloc] init];
+            ivc.image = img;
+            // Present a 600x600 popover from the rect
+            self.imagePopover = [[UIPopoverController alloc]
+                                 initWithContentViewController:ivc];
+            self.imagePopover.delegate = self;
+            self.imagePopover.popoverContentSize = CGSizeMake(600, 600);
+            [self.imagePopover presentPopoverFromRect:rect
+                                               inView:self.view
+                             permittedArrowDirections:UIPopoverArrowDirectionAny
+                                             animated:YES];
+        }
+    };
+
+    return cell;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    EADDetailViewController *detailViewController = [[EADDetailViewController alloc] initForNewItem:NO];
+
+    NSArray *items = [[EADItemStore sharedStore] allItems];
+    EADItem *selectedItem = items[indexPath.row];
+
+    // Give detail view controller a pointer to the item object in row
+    detailViewController.item = selectedItem;
+
+    // Push it onto the top of the navigation controller's stack
+    [self.navigationController pushViewController:detailViewController
+                                         animated:YES];
+}
+
+- (void)   tableView:(UITableView *)tableView
+  commitEditingStyle:(UITableViewCellEditingStyle)editingStyle
+   forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    // If the table view is asking to commit a delete command...
+    if (editingStyle == UITableViewCellEditingStyleDelete) {
+        NSArray *items = [[EADItemStore sharedStore] allItems];
+        EADItem *item = items[indexPath.row];
+        [[EADItemStore sharedStore] removeItem:item];
+
+        // Also remove that row from the table view with an animation
+        [tableView deleteRowsAtIndexPaths:@[indexPath]
+                         withRowAnimation:UITableViewRowAnimationFade];
+    }
+}
+
+- (void)   tableView:(UITableView *)tableView
+  moveRowAtIndexPath:(NSIndexPath *)sourceIndexPath
+         toIndexPath:(NSIndexPath *)destinationIndexPath
+{
+    [[EADItemStore sharedStore] moveItemAtIndex:sourceIndexPath.row
+                                        toIndex:destinationIndexPath.row];
+}
+
+- (IBAction)addNewItem:(id)sender
+{
+    // Create a new EADItem and add it to the store
+    EADItem *newItem = [[EADItemStore sharedStore] createItem];
+
+    EADDetailViewController *detailViewController = [[EADDetailViewController alloc] initForNewItem:YES];
+
+    detailViewController.item = newItem;
+
+    detailViewController.dismissBlock = ^{
+        [self.tableView reloadData];
+    };
+
+    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:detailViewController];
+
+    navController.modalPresentationStyle = UIModalPresentationFormSheet;
+    
+    [self presentViewController:navController animated:YES completion:NULL];
+}
+
+- (void)popoverControllerDidDismissPopover:(UIPopoverController *)popoverController
+{
+    self.imagePopover = nil;
+}
+
+@end
+//
+//  EADItemCell.h
+//  HomePwner
+//
+//  Created by Ryan on 7/14/15.
+//  Copyright (c) 2015 Docs Playground. All rights reserved.
+//
+
+#import <Foundation/Foundation.h>
+
+@interface EADItemCell : UITableViewCell
+
+@property (weak, nonatomic) IBOutlet UIImageView *thumbnailView;
+@property (weak, nonatomic) IBOutlet UILabel *nameLabel;
+@property (weak, nonatomic) IBOutlet UILabel *serialNumberLabel;
+@property (weak, nonatomic) IBOutlet UILabel *valueLabel;
+
+@property (copy, nonatomic) void (^actionBlock)(void);
+
+@end
+//
+//  EADItemCell.m
+//  HomePwner
+//
+//  Created by Ryan on 7/14/15.
+//  Copyright (c) 2015 Docs Playground. All rights reserved.
+//
+
+#import "EADItemCell.h"
+
+@interface EADItemCell ()
+
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint *imageViewHeightConstraint;
+
+@end
+
+@implementation EADItemCell
+
+- (void)updateInterfaceForDynamicTypeSize
+{
+    UIFont *font = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
+    self.nameLabel.font = font;
+    self.serialNumberLabel.font = font;
+    self.valueLabel.font = font;
+
+    static NSDictionary *imageSizeDictionary;
+
+    if (!imageSizeDictionary) {
+        imageSizeDictionary = @{ UIContentSizeCategoryExtraSmall : @40,
+                                 UIContentSizeCategorySmall : @40,
+                                 UIContentSizeCategoryMedium : @40,
+                                 UIContentSizeCategoryLarge : @40,
+                                 UIContentSizeCategoryExtraLarge : @45,
+                                 UIContentSizeCategoryExtraExtraLarge : @55,
+                                 UIContentSizeCategoryExtraExtraExtraLarge : @65 };
+    }
+
+    NSString *userSize = [[UIApplication sharedApplication] preferredContentSizeCategory];
+
+    NSNumber *imageSize = imageSizeDictionary[userSize];
+    self.imageViewHeightConstraint.constant = imageSize.floatValue;
+}
+
+- (void)awakeFromNib
+{
+    [super awakeFromNib];
+    [self updateInterfaceForDynamicTypeSize];
+
+    NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
+    [nc addObserver:self
+           selector:@selector(updateInterfaceForDynamicTypeSize)
+               name:UIContentSizeCategoryDidChangeNotification
+             object:nil];
+
+    NSLayoutConstraint *constraint =
+        [NSLayoutConstraint constraintWithItem:self.thumbnailView
+                                     attribute:NSLayoutAttributeHeight
+                                     relatedBy:NSLayoutRelationEqual
+                                        toItem:self.thumbnailView
+                                     attribute:NSLayoutAttributeWidth
+                                    multiplier:1
+                                      constant:0];
+    [self.thumbnailView addConstraint:constraint];
+}
+
+- (void)dealloc
+{
+    NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
+    [nc removeObserver:self];
+}
+
+- (IBAction)showImage:(id)sender
+{
+    if (self.actionBlock) {
+        self.actionBlock();
+    }
+}
+
+@end
+//
+//  EADImageViewController.h
+//  HomePwner
+//
+//  Created by Ryan on 7/14/15.
+//  Copyright (c) 2015 Docs Playground. All rights reserved.
+//
+
+#import <UIKit/UIKit.h>
+
+@interface EADImageViewController : UIViewController
+
+@property (nonatomic, strong) UIImage *image;
+
+@end
+//
+//  EADImageViewController.m
+//  HomePwner
+//
+//  Created by Ryan on 7/14/15.
+//  Copyright (c) 2015 Docs Playground. All rights reserved.
+//
+
+#import "EADImageViewController.h"
+
+@interface EADImageViewController ()
+
+@end
+
+@implementation EADImageViewController
+
+- (void)loadView
+{
+    UIImageView *imageView = [[UIImageView alloc] init];
+    imageView.contentMode = UIViewContentModeScaleAspectFit;
+    self.view = imageView;
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+
+    // We must cast the view to UIImageView so the compiler knows it
+    // is okay to send it setImage:
+    UIImageView *imageView = (UIImageView *)self.view;
+    imageView.image = self.image;
+}
+
+@end
+//
+//  EADDetailViewController.h
+//  HomePwner
+//
+//  Created by Ryan on 7/14/15.
+//  Copyright (c) 2015 Docs Playground. All rights reserved.
+//
+
+#import <UIKit/UIKit.h>
+
+@class EADItem;
+
+@interface EADDetailViewController : UIViewController
+
+@property (nonatomic, strong) EADItem *item;
+@property (nonatomic, copy) void (^dismissBlock)(void);
+
+- (instancetype)initForNewItem:(BOOL)isNew;
+
+@end
+//
+//  EADDetailViewController.m
+//  HomePwner
+//
+//  Created by Ryan on 7/14/15.
+//  Copyright (c) 2015 Docs Playground. All rights reserved.
+//
+
+#import "EADDetailViewController.h"
+#import "EADItem.h"
+#import "EADImageStore.h"
+#import "EADItemStore.h"
+#import "EADAssetTypeViewController.h"
+#import "EADAssetLocation.h"
+
+@interface EADDetailViewController () <UINavigationControllerDelegate, UIImagePickerControllerDelegate,
+    UITextFieldDelegate, UIPopoverControllerDelegate>
+
+@property (nonatomic, strong) UIPopoverController *imagePickerPopover;
+@property (weak, nonatomic) IBOutlet UITextField *nameField;
+@property (weak, nonatomic) IBOutlet UITextField *serialNumberField;
+@property (weak, nonatomic) IBOutlet UITextField *valueField;
+@property (weak, nonatomic) IBOutlet UILabel *dateLabel;
+@property (weak, nonatomic) IBOutlet UIImageView *imageView;
+@property (weak, nonatomic) IBOutlet UIToolbar *toolbar;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *cameraButton;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *assetTypeButton;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *locationButton;
+
+@property (weak, nonatomic) IBOutlet UILabel *nameLabel;
+@property (weak, nonatomic) IBOutlet UILabel *serialNumberLabel;
+@property (weak, nonatomic) IBOutlet UILabel *valueLabel;
+
+- (IBAction)takePicture:(id)sender;
+- (IBAction)backgroundTapped:(id)sender;
+- (IBAction)showAssetTypePicker:(id)sender;
+- (IBAction)locationButtonPicker:(id)sender;
+
+@end
+
+@implementation EADDetailViewController
+
+- (instancetype)initForNewItem:(BOOL)isNew
+{
+    self = [super initWithNibName:nil bundle:nil];
+
+    if (self) {
+        if (isNew) {
+            UIBarButtonItem *doneItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone
+                                                                                      target:self
+                                                                                      action:@selector(save:)];
+            self.navigationItem.rightBarButtonItem = doneItem;
+
+            UIBarButtonItem *cancelItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
+                                                                                        target:self
+                                                                                        action:@selector(cancel:)];
+            self.navigationItem.leftBarButtonItem = cancelItem;
+        }
+
+        // Make sure this is NOT in the if (isNew ) { } block of code
+        NSNotificationCenter *defaultCenter = [NSNotificationCenter defaultCenter];
+        [defaultCenter addObserver:self
+                          selector:@selector(updateFonts)
+                              name:UIContentSizeCategoryDidChangeNotification
+                            object:nil];
+    }
+
+    return self;
+}
+
+- (void)dealloc
+{
+    NSNotificationCenter *defaultCenter = [NSNotificationCenter defaultCenter];
+    [defaultCenter removeObserver:self];
+}
+
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+{
+    @throw [NSException exceptionWithName:@"Wrong initializer"
+                                   reason:@"Use initForNewItem:"
+                                 userInfo:nil];
+    return nil;
+}
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+
+    UIImageView *iv = [[UIImageView alloc] initWithImage:nil];
+
+    // The contentMode of the image view in the XIB was Aspect Fit:
+    iv.contentMode = UIViewContentModeScaleAspectFit;
+
+    // Do not produce a translated constraint for this view
+    iv.translatesAutoresizingMaskIntoConstraints = NO;
+
+    // The image view was a subview of the view
+    [self.view addSubview:iv];
+
+    // The image view was pointed to by the imageView property
+    self.imageView = iv;
+
+    NSDictionary *nameMap = @{@"imageView": self.imageView,
+                              @"dateLabel": self.dateLabel,
+                              @"toolbar": self.toolbar};
+
+    // imageView is 0 pts from superview at left and right edges
+    NSArray *horizontalConstraints =
+        [NSLayoutConstraint constraintsWithVisualFormat:@"H:|-0-[imageView]-0-|"
+                                                options:0
+                                                metrics:nil
+                                                  views:nameMap];
+
+    // imaveView is 8 pts from dateLabel at its top edge...
+    // ... and 8 pts from toolbar at its bottom edge
+    NSArray *verticalConstraints =
+        [NSLayoutConstraint constraintsWithVisualFormat:@"V:[dateLabel]-[imageView]-[toolbar]"
+                                                options:0
+                                                metrics:nil
+                                                  views:nameMap];
+
+    [self.view addConstraints:horizontalConstraints];
+    [self.view addConstraints:verticalConstraints];
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+
+    UIInterfaceOrientation io = [[UIApplication sharedApplication] statusBarOrientation];
+    [self prepareViewsForOrientation:io];
+
+    EADItem *item = self.item;
+
+    self.nameField.text = item.itemName;
+    self.serialNumberField.text = item.serialNumber;
+    self.valueField.text = [NSString stringWithFormat:@"%d", item.valueInDollars];
+
+    // You need a NSDateFormatter that will turn a date into a simple date string
+    static NSDateFormatter *dateFormatter;
+    if (!dateFormatter) {
+        dateFormatter = [[NSDateFormatter alloc] init];
+        dateFormatter.dateStyle = NSDateFormatterMediumStyle;
+        dateFormatter.timeStyle = NSDateFormatterNoStyle;
+    }
+
+    // Use filtered NSDate object to set dateLabel contents
+    self.dateLabel.text = [dateFormatter stringFromDate:item.dateCreated];
+
+    NSString *itemKey = self.item.itemKey;
+    if (itemKey) {
+        // Get image for image key from the image store
+        UIImage *imageToDisplay = [[EADImageStore sharedStore] imageForKey:itemKey];
+
+        // Use that image to put on the screen in imageView
+        self.imageView.image = imageToDisplay;
+    } else {
+        // Clear the imageView
+        self.imageView.image = nil;
+    }
+
+    NSString *typeLabel = [self.item.assetType valueForKey:@"label"];
+    if (!typeLabel) {
+        typeLabel = @"None";
+    }
+
+    self.assetTypeButton.title = [NSString stringWithFormat:@"Type: %@", typeLabel];
+    
+    
+    NSString *roomLabel = [self.item.assetLocation valueForKey:@"roomLocation"];
+    if (!roomLabel) {
+        roomLabel = @"None";
+    }
+
+    self.locationButton.title = [NSString stringWithFormat:@"Room: %@", roomLabel];
+    
+    [self updateFonts];
+
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+
+    // Clear first responder
+    [self.view endEditing:YES];
+
+    // "Save" changes to item
+    EADItem *item = self.item;
+    item.itemName = self.nameField.text;
+    item.serialNumber = self.serialNumberField.text;
+    item.valueInDollars = [self.valueField.text intValue];
+}
+
+- (void)prepareViewsForOrientation:(UIInterfaceOrientation)orientation
+{
+    // Is it an iPad? No preparation necessary
+    if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad) {
+        return;
+    }
+
+    // Is it landscape?
+    if (UIInterfaceOrientationIsLandscape(orientation)) {
+        self.imageView.hidden = YES;
+        self.cameraButton.enabled = NO;
+    } else {
+        self.imageView.hidden = NO;
+        self.cameraButton.enabled = YES;
+    }
+}
+
+- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
+                                duration:(NSTimeInterval)duration
+{
+    [self prepareViewsForOrientation:toInterfaceOrientation];
+}
+
+- (void)updateFonts
+{
+    UIFont *font = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
+
+    self.nameLabel.font = font;
+    self.serialNumberLabel.font = font;
+    self.valueLabel.font = font;
+    self.dateLabel.font = font;
+
+    self.nameField.font = font;
+    self.serialNumberField.font = font;
+    self.valueField.font = font;
+}
+
+- (void)setItem:(EADItem *)item
+{
+    _item = item;
+    self.navigationItem.title = _item.itemName;
+}
+
+- (void)save:(id)sender
+{
+    [self.presentingViewController dismissViewControllerAnimated:YES completion:self.dismissBlock];
+}
+
+- (void)cancel:(id)sender
+{
+    // If the user cancelled, then remoce the EADItem from the store
+    [[EADItemStore sharedStore] removeItem:self.item];
+
+    [self.presentingViewController dismissViewControllerAnimated:YES completion:self.dismissBlock];
+}
+
+- (IBAction)takePicture:(id)sender
+{
+    if ([self.imagePickerPopover isPopoverVisible]) {
+        // If the popover is already up, get rid of it
+        [self.imagePickerPopover dismissPopoverAnimated:YES];
+        self.imagePickerPopover = nil;
+        return;
+    }
+
+    UIImagePickerController *imagePicker = [[UIImagePickerController alloc] init];
+
+    // If the device ahs a camera, take a picture, otherwise,
+    // just pick from the photo library
+    if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
+        imagePicker.sourceType = UIImagePickerControllerSourceTypeCamera;
+    } else {
+        imagePicker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+    }
+
+    imagePicker.delegate = self;
+
+    // Place image picker on the screen
+    // Check for iPad device before instantiating the popover controller
+    if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad) {
+        // Create a new popover controller that will display the imagePicker
+        self.imagePickerPopover = [[UIPopoverController alloc] initWithContentViewController:imagePicker];
+
+        self.imagePickerPopover.delegate = self;
+
+        // Display the popover controller; sender
+        // is the camera bar button item
+        [self.imagePickerPopover presentPopoverFromBarButtonItem:sender
+                                        permittedArrowDirections:UIPopoverArrowDirectionAny
+                                                        animated:YES];
+    } else {
+        [self presentViewController:imagePicker animated:YES completion:NULL];
+    }
+}
+
+- (IBAction)backgroundTapped:(id)sender
+{
+    [self.view endEditing:YES];
+}
+
+- (IBAction)showAssetTypePicker:(id)sender
+{
+    [self.view endEditing:YES];
+
+    EADAssetTypeViewController *avc = [[EADAssetTypeViewController alloc] init];
+    avc.item = self.item;
+
+    [self.navigationController pushViewController:avc
+                                         animated:YES];
+}
+
+- (IBAction)locationButtonPicker:(id)sender
+{
+    [self.view endEditing:YES];
+    
+    EADAssetLocation *location = [[EADAssetLocation alloc] init];
+    location.item = self.item;
+    
+    [self.navigationController pushViewController:location animated:YES];
+}
+
+- (void)imagePickerController:(UIImagePickerController *)picker
+didFinishPickingMediaWithInfo:(NSDictionary *)info
+{
+    NSString *oldKey = self.item.itemKey;
+
+    // Did the item already have an image?
+    if (oldKey) {
+        // Delete the old image
+        [[EADImageStore sharedStore] deleteImageForKey:oldKey];
+    }
+
+    // Get picked image from info dictionary
+    UIImage *image = info[UIImagePickerControllerOriginalImage];
+
+    [self.item setThumbnailFromImage:image];
+
+    // Store the image in the EADImageStore for this key
+    [[EADImageStore sharedStore] setImage:image forKey:self.item.itemKey];
+
+    // Put that image onto the screen in our image view
+    self.imageView.image = image;
+
+    // Do I have a popover?
+    if (self.imagePickerPopover) {
+
+        // Dismiss it
+        [self.imagePickerPopover dismissPopoverAnimated:YES];
+        self.imagePickerPopover = nil;
+    } else {
+
+        // Dismiss the modal image picker
+        [self dismissViewControllerAnimated:YES completion:NULL];
+    }
+}
+
+- (void)popoverControllerDidDismissPopover:(UIPopoverController *)popoverController
+{
+    NSLog(@"User dismissed popover");
+    self.imagePickerPopover = nil;
+}
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+    [textField resignFirstResponder];
+    return YES;
+}
+
+@end
+//
+//  EADAssetTypeViewController.h
+//  HomePwner
+//
+//  Created by Ryan on 7/14/15.
+//  Copyright (c) 2015 Docs Playground. All rights reserved.
+//
+
+#import <UIKit/UIKit.h>
+
+@class EADItem;
+
+@interface EADAssetTypeViewController : UITableViewController
+
+@property (nonatomic, strong) EADItem *item;
+
+@end
+//
+//  EADAssetTypeViewController.m
+//  HomePwner
+//
+//  Created by Ryan on 7/14/15.
+//  Copyright (c) 2015 Docs Playground. All rights reserved.
+//
+
+#import "EADAssetTypeViewController.h"
+#import "EADItemStore.h"
+#import "EADItem.h"
+
+@implementation EADAssetTypeViewController
+
+- (instancetype)init
+{
+    return [super initWithStyle:UITableViewStylePlain];
+}
+
+- (instancetype)initWithStyle:(UITableViewStyle)style
+{
+    return [self init];
+}
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+
+    [self.tableView registerClass:[UITableViewCell class]
+           forCellReuseIdentifier:@"UITableViewCell"];
+}
+
+- (NSInteger)tableView:(UITableView *)tableView
+ numberOfRowsInSection:(NSInteger)section
+{
+    return [[[EADItemStore sharedStore] allAssetTypes] count];
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView
+         cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"UITableViewCell"
+                                                            forIndexPath:indexPath];
+
+    NSArray *allAssets = [[EADItemStore sharedStore] allAssetTypes];
+    NSManagedObject *assetType = allAssets[indexPath.row];
+
+    // Use key-value coding to get the asset type's label
+    NSString *assetLabel = [assetType valueForKey:@"label"];
+    cell.textLabel.text = assetLabel;
+
+    // Checkmark the one that is currently selected
+    if (assetType == self.item.assetType) {
+        cell.accessoryType = UITableViewCellAccessoryCheckmark;
+    } else {
+        cell.accessoryType = UITableViewCellAccessoryNone;
+    }
+
+    return cell;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+
+    cell.accessoryType = UITableViewCellAccessoryCheckmark;
+
+    NSArray *allAssets = [[EADItemStore sharedStore] allAssetTypes];
+    NSManagedObject *assetType = allAssets[indexPath.row];
+    self.item.assetType = assetType;
+
+    [self.navigationController popViewControllerAnimated:YES];
+}
+
+@end
+//
+//  EADAssetLocation.h
+//  HomePwner
+//
+//  Created by Ryan on 7/14/15.
+//  Copyright (c) 2015 Big Nerd Ranch. All rights reserved.
+//
+
+#import <UIKit/UIKit.h>
+
+@class EADItem;
+
+@interface EADAssetLocation : UITableViewController
+
+@property (nonatomic, strong) EADItem *item;
+
+@end
+//
+//  EADAssetLocation.m
+//  HomePwner
+//
+//  Created by Ryan on 7/14/15.
+//  Copyright (c) 2015 Big Nerd Ranch. All rights reserved.
+//
+#import <UIKit/UIKit.h>
+
+#import "EADAssetLocation.h"
+#import "EADItemStore.h"
+#import "EADItem.h"
+
+@implementation EADAssetLocation
+
+- (instancetype)init
+{
+    return [super initWithStyle:UITableViewStylePlain];
+}
+
+- (instancetype)initWithStyle:(UITableViewStyle)style
+{
+    return [self init];
+}
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    
+    [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"UITableViewCell"];
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    return [[[EADItemStore sharedStore] allRoomLocations] count];
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"UITableViewCell"
+                                                            forIndexPath:indexPath];
+    
+    NSArray *allrooms = [[EADItemStore sharedStore] allRoomLocations];
+    NSManagedObject *assetType = allrooms[indexPath.row];
+    
+    // Use key-value coding to get the asset type's label
+    NSString *assetLabel = [assetType valueForKey:@"roomLocation"];
+    cell.textLabel.text = assetLabel;
+    
+    // Checkmark the one that is currently selected
+    if (assetType == self.item.assetType) {
+        cell.accessoryType = UITableViewCellAccessoryCheckmark;
+    } else {
+        cell.accessoryType = UITableViewCellAccessoryNone;
+    }
+    
+    return cell;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+    
+    cell.accessoryType = UITableViewCellAccessoryCheckmark;
+    
+    NSArray *allAssets = [[EADItemStore sharedStore] allRoomLocations];
+    NSManagedObject *assetType = allAssets[indexPath.row];
+    self.item.assetLocation = assetType;
+    
+    [self.navigationController popViewControllerAnimated:YES];
+}
+
+@end

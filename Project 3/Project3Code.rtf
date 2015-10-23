@@ -1,0 +1,669 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1347\cocoasubrtf570
+{\fonttbl\f0\fswiss\fcharset0 Helvetica;\f1\fnil\fcharset0 Menlo-Regular;}
+{\colortbl;\red255\green255\blue255;\red0\green116\blue0;\red100\green56\blue32;\red196\green26\blue22;
+\red170\green13\blue145;\red92\green38\blue153;\red63\green110\blue116;\red46\green13\blue110;\red28\green0\blue207;
+}
+\margl1440\margr1440\vieww13220\viewh16540\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
+
+\f0\fs24 \cf0 Project 3 Part 1\
+\pard\tx529\pardeftab529\pardirnatural
+
+\f1\fs22 \cf2 \CocoaLigature0 //\cf0 \
+\cf2 //  AppDelegate.h\cf0 \
+\cf2 //  Hyponsister\cf0 \
+\cf2 //\cf0 \
+\cf2 //  Created by Ryan on 6/3/15.\cf0 \
+\cf2 //  Copyright (c) 2015 Docs Playground. All rights reserved.\cf0 \
+\cf2 //\cf0 \
+\
+\cf3 #import \cf4 <UIKit/UIKit.h>\cf3 \
+\cf0 \
+\cf5 @interface\cf0  AppDelegate : \cf6 UIResponder\cf0  <\cf6 UIApplicationDelegate\cf0 >\
+\
+\cf5 @property\cf0  (\cf5 strong\cf0 , \cf5 nonatomic\cf0 ) \cf6 UIWindow\cf0  *window;\
+\
+\
+\cf5 @end\cf0 \
+\
+\cf2 //\cf0 \
+\cf2 //  AppDelegate.m\cf0 \
+\cf2 //  Hyponsister\cf0 \
+\cf2 //\cf0 \
+\cf2 //  Created by Ryan on 6/3/15.\cf0 \
+\cf2 //  Copyright (c) 2015 Docs Playground. All rights reserved.\cf0 \
+\cf2 //\cf0 \
+\
+\cf3 #import \cf4 "AppDelegate.h"\cf3 \
+#import \cf4 "EADHypnosisView.h"\cf3 \
+\cf0 \
+\cf5 @interface\cf0  \cf7 AppDelegate\cf0  ()\
+\
+\cf5 @end\cf0 \
+\
+\cf5 @implementation\cf0  AppDelegate\
+\
+\
+- (\cf5 BOOL\cf0 )application:(\cf6 UIApplication\cf0  *)application didFinishLaunchingWithOptions:(\cf6 NSDictionary\cf0  *)launchOptions \{\
+    \cf5 self\cf0 .\cf7 window\cf0  = [[\cf6 UIWindow\cf0  \cf8 alloc\cf0 ] \cf8 initWithFrame\cf0 :[[\cf6 UIScreen\cf0  \cf8 mainScreen\cf0 ] \cf8 bounds\cf0 ]];\
+    \cf2 // Override point for customization after application launch.\cf0 \
+    \
+    \cf6 CGRect\cf0  firstFrame = \cf5 self\cf0 .\cf7 window\cf0 .\cf6 bounds\cf0 ;\
+    \
+    \cf7 EADHypnosisView\cf0  *firstView = [[\cf7 EADHypnosisView\cf0  \cf8 alloc\cf0 ] \cf8 initWithFrame\cf0 :firstFrame];\
+    \
+    [\cf5 self\cf0 .\cf7 window\cf0  \cf8 addSubview\cf0 :firstView];\
+    \
+    \cf5 self\cf0 .\cf7 window\cf0 .\cf6 backgroundColor\cf0  = [\cf6 UIColor\cf0  \cf8 whiteColor\cf0 ];\
+    [\cf5 self\cf0 .\cf7 window\cf0  \cf8 makeKeyAndVisible\cf0 ];\
+    \cf5 return\cf0  \cf5 YES\cf0 ;\
+\}\
+\
+- (\cf5 void\cf0 )applicationWillResignActive:(\cf6 UIApplication\cf0  *)application \{\
+    \cf2 // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.\cf0 \
+    \cf2 // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.\cf0 \
+\}\
+\
+- (\cf5 void\cf0 )applicationDidEnterBackground:(\cf6 UIApplication\cf0  *)application \{\
+    \cf2 // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.\cf0 \
+    \cf2 // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.\cf0 \
+\}\
+\
+- (\cf5 void\cf0 )applicationWillEnterForeground:(\cf6 UIApplication\cf0  *)application \{\
+    \cf2 // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.\cf0 \
+\}\
+\
+- (\cf5 void\cf0 )applicationDidBecomeActive:(\cf6 UIApplication\cf0  *)application \{\
+    \cf2 // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.\cf0 \
+\}\
+\
+- (\cf5 void\cf0 )applicationWillTerminate:(\cf6 UIApplication\cf0  *)application \{\
+    \cf2 // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.\cf0 \
+\}\
+\
+\cf5 @end\cf0 \
+\cf2 //\cf0 \
+\cf2 //  ViewController.h\cf0 \
+\cf2 //  Hyponsister\cf0 \
+\cf2 //\cf0 \
+\cf2 //  Created by Ryan on 6/3/15.\cf0 \
+\cf2 //  Copyright (c) 2015 Docs Playground. All rights reserved.\cf0 \
+\cf2 //\cf0 \
+\
+\cf3 #import \cf4 <UIKit/UIKit.h>\cf3 \
+\cf0 \
+\cf5 @interface\cf0  ViewController : \cf6 UIViewController\cf0 \
+\
+\
+\cf5 @end\cf0 \
+\
+\cf2 //\cf0 \
+\cf2 //  EADHypnosisView.h\cf0 \
+\cf2 //  Hyponsister\cf0 \
+\cf2 //\cf0 \
+\cf2 //  Created by Ryan on 6/3/15.\cf0 \
+\cf2 //  Copyright (c) 2015 Docs Playground. All rights reserved.\cf0 \
+\cf2 //\cf0 \
+\
+\cf3 #import \cf4 <UIKit/UIKit.h>\cf3 \
+\cf0 \
+\cf5 @interface\cf0  EADHypnosisView : \cf6 UIView\cf0 \
+\
+\cf5 @end\cf0 \
+\cf2 //\cf0 \
+\cf2 //  EADHypnosisView.m\cf0 \
+\cf2 //  Hyponsister\cf0 \
+\cf2 //\cf0 \
+\cf2 //  Created by Ryan on 6/3/15.\cf0 \
+\cf2 //  Copyright (c) 2015 Docs Playground. All rights reserved.\cf0 \
+\cf2 //\cf0 \
+\
+\cf3 #import \cf4 "EADHypnosisView.h"\cf3 \
+\cf0 \
+\cf5 @implementation\cf0  EADHypnosisView\
+- (\cf5 id\cf0 )initWithFrame:(\cf6 CGRect\cf0 )frame\
+\{\
+    \cf5 self\cf0  = [\cf5 super\cf0  \cf8 initWithFrame\cf0 :frame];\
+    \cf5 if\cf0  (\cf5 self\cf0 ) \{\
+        \
+        \cf5 self\cf0 .\cf6 backgroundColor\cf0  = [\cf6 UIColor\cf0  \cf8 clearColor\cf0 ];\
+    \}\
+    \cf5 return\cf0  \cf5 self\cf0 ;\
+\}\
+\
+\cf2 // Only override drawRect: if you perform custom drawing.\cf0 \
+\cf2 // An empty implementation adversely affects performance during animation.\cf0 \
+- (\cf5 void\cf0 )drawRect:(\cf6 CGRect\cf0 )rect\
+\{\
+    \cf6 CGRect\cf0  bounds = \cf5 self\cf0 .\cf6 bounds\cf0 ;\
+    \cf6 CGPoint\cf0  center;\
+    center.\cf6 x\cf0  = bounds.\cf6 origin\cf0 .\cf6 x\cf0  + bounds.\cf6 size\cf0 .\cf6 width\cf0  / \cf9 2.0\cf0 ;\
+    center.\cf6 y\cf0  = bounds.\cf6 origin\cf0 .\cf6 y\cf0  + bounds.\cf6 size\cf0 .\cf6 height\cf0  / \cf9 2.0\cf0 ;\
+\
+    \cf5 float\cf0  maxRadius = \cf8 hypot\cf0 (bounds.\cf6 size\cf0 .\cf6 width\cf0 , bounds.\cf6 size\cf0 .\cf6 height\cf0 ) / \cf9 2.0\cf0 ;\
+    \
+    \cf6 UIBezierPath\cf0  *path = [[\cf6 UIBezierPath\cf0  \cf8 alloc\cf0 ] \cf8 init\cf0 ];\
+    \
+    \cf5 for\cf0  (\cf5 float\cf0  currentRadius = maxRadius; currentRadius > \cf9 0\cf0 ; currentRadius -= \cf9 20\cf0 ) \{\
+        [path \cf8 moveToPoint\cf0 :\cf8 CGPointMake\cf0 (center.\cf6 x\cf0  + currentRadius, center.\cf6 y\cf0 )];\
+        \
+        [path \cf8 addArcWithCenter\cf0 :center\
+                        \cf8 radius\cf0 :currentRadius\
+                    \cf8 startAngle\cf0 :\cf9 0.0\cf0 \
+                      \cf8 endAngle\cf0 :\cf3 M_PI\cf0  * \cf9 2.0\cf0 \
+                     \cf8 clockwise\cf0 :\cf5 YES\cf0 ];\
+    \}\
+    \
+    \
+    path.\cf6 lineWidth\cf0  = \cf9 10\cf0 ;\
+    \
+    \
+    [[\cf6 UIColor\cf0  \cf8 lightGrayColor\cf0 ] \cf8 setStroke\cf0 ];\
+    \
+\}\
+\
+\cf5 @end\cf0 \
+\cf2 //\cf0 \
+\cf2 //  ViewController.m\cf0 \
+\cf2 //  Hyponsister\cf0 \
+\cf2 //\cf0 \
+\cf2 //  Created by Ryan on 6/3/15.\cf0 \
+\cf2 //  Copyright (c) 2015 Docs Playground. All rights reserved.\cf0 \
+\cf2 //\cf0 \
+\
+\cf3 #import \cf4 "ViewController.h"\cf3 \
+\cf0 \
+\cf5 @interface\cf0  \cf7 ViewController\cf0  ()\
+\
+\cf5 @end\cf0 \
+\
+\cf5 @implementation\cf0  ViewController\
+\
+\
+- (\cf5 void\cf0 )viewDidLoad \{\
+    [\cf5 super\cf0  \cf8 viewDidLoad\cf0 ];\
+    \cf2 // Do any additional setup after loading the view, typically from a nib.\cf0 \
+\}\
+\
+- (\cf5 void\cf0 )didReceiveMemoryWarning \{\
+    [\cf5 super\cf0  \cf8 didReceiveMemoryWarning\cf0 ];\
+    \cf2 // Dispose of any resources that can be recreated.\cf0 \
+\}\
+\
+\cf5 @end\cf0 \
+\
+\
+\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
+Project 3 part 2/3\
+\cf2 //\cf0 \
+\cf2 //  AppDelegate.h\cf0 \
+\cf2 //  HypnoNerd\cf0 \
+\cf2 //\cf0 \
+\cf2 //  Created by Ryan on 6/3/15.\cf0 \
+\cf2 //  Copyright (c) 2015 Docs Playground. All rights reserved.\cf0 \
+\cf2 //\cf0 \
+\
+\cf3 #import \cf4 <UIKit/UIKit.h>\cf3 \
+\cf0 \
+\cf5 @interface\cf0  AppDelegate : \cf6 UIResponder\cf0  <\cf6 UIApplicationDelegate\cf0 >\
+\
+\cf5 @property\cf0  (\cf5 strong\cf0 , \cf5 nonatomic\cf0 ) \cf6 UIWindow\cf0  *window;\
+\
+\
+\cf5 @end\cf0 \
+\cf2 //\cf0 \
+\cf2 //  AppDelegate.m\cf0 \
+\cf2 //  HypnoNerd\cf0 \
+\cf2 //\cf0 \
+\cf2 //  Created by Ryan on 6/3/15.\cf0 \
+\cf2 //  Copyright (c) 2015 Docs Playground. All rights reserved.\cf0 \
+\cf2 //\cf0 \
+\
+\cf3 #import \cf4 "AppDelegate.h"\cf3 \
+#import \cf4 "EADViewController.h"\cf3 \
+#import \cf4 "EADReminderViewController.h"\cf3 \
+#import \cf4 \'93EADQuizViewController.h"\cf3 \
+\cf0 \
+\
+\cf5 @implementation\cf0  AppDelegate\
+\
+- (\cf5 BOOL\cf0 )application:(\cf6 UIApplication\cf0  *)application didFinishLaunchingWithOptions:(\cf6 NSDictionary\cf0  *)launchOptions\
+\{\
+    \cf5 self\cf0 .\cf7 window\cf0  = [[\cf6 UIWindow\cf0  \cf8 alloc\cf0 ] \cf8 initWithFrame\cf0 :[[\cf6 UIScreen\cf0  \cf8 mainScreen\cf0 ] \cf8 bounds\cf0 ]];\
+    \cf2 // Override point for customization after application launch.\cf0 \
+    \
+    \
+    \cf7 EADViewController\cf0  *hvc = [[\cf7 EADViewController\cf0  \cf8 alloc\cf0 ] \cf8 init\cf0 ];\
+    \
+    \cf2 // Look in the appBundle for the file EADReminderViewController.xib\cf0 \
+    \cf7 EADReminderViewController\cf0  *rvc = [[\cf7 EADReminderViewController\cf0  \cf8 alloc\cf0 ] \cf8 init\cf0 ];\
+    \
+    \cf2 //quiz file\cf0 \
+    \cf7 EADQuizViewController\cf0  *qvc = [[\cf7 EADQuizViewController\cf0  \cf8 alloc\cf0 ] \cf8 init\cf0 ];\
+    \
+    \cf6 UITabBarController\cf0  *tabBarController = [[\cf6 UITabBarController\cf0  \cf8 alloc\cf0 ] \cf8 init\cf0 ];\
+    tabBarController.\cf6 viewControllers\cf0  = \cf9 @[\cf0 hvc, rvc,qvc\cf9 ]\cf0 ;\
+    \
+    \cf5 self\cf0 .\cf7 window\cf0 .\cf6 rootViewController\cf0  = tabBarController;\
+    \
+    \cf5 self\cf0 .\cf7 window\cf0 .\cf6 backgroundColor\cf0  = [\cf6 UIColor\cf0  \cf8 whiteColor\cf0 ];\
+    [\cf5 self\cf0 .\cf7 window\cf0  \cf8 makeKeyAndVisible\cf0 ];\
+    \cf5 return\cf0  \cf5 YES\cf0 ;\
+\}\
+\
+- (\cf5 void\cf0 )applicationWillResignActive:(\cf6 UIApplication\cf0  *)application\
+\{\
+    \cf2 // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.\cf0 \
+    \cf2 // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.\cf0 \
+\}\
+\
+- (\cf5 void\cf0 )applicationDidEnterBackground:(\cf6 UIApplication\cf0  *)application\
+\{\
+    \cf2 // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.\cf0 \
+    \cf2 // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.\cf0 \
+\}\
+\
+- (\cf5 void\cf0 )applicationWillEnterForeground:(\cf6 UIApplication\cf0  *)application\
+\{\
+    \cf2 // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.\cf0 \
+\}\
+\
+- (\cf5 void\cf0 )applicationDidBecomeActive:(\cf6 UIApplication\cf0  *)application\
+\{\
+    \cf2 // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.\cf0 \
+\}\
+\
+- (\cf5 void\cf0 )applicationWillTerminate:(\cf6 UIApplication\cf0  *)application\
+\{\
+    \cf2 // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.\cf0 \
+\}\
+\
+\cf5 @end\cf0 \
+\cf2 //\cf0 \
+\cf2 //  EADHypnosisView.h\cf0 \
+\cf2 //  Hyponsister\cf0 \
+\cf2 //\cf0 \
+\cf2 //  Created by Ryan on 6/3/15.\cf0 \
+\cf2 //  Copyright (c) 2015 Docs Playground. All rights reserved.\cf0 \
+\cf2 //\cf0 \
+\
+\cf3 #import \cf4 <UIKit/UIKit.h>\cf3 \
+\cf0 \
+\cf5 @interface\cf0  EADHypnosisView : \cf6 UIView\cf0 \
+\
+\cf5 @property\cf0  (\cf5 strong\cf0 , \cf5 nonatomic\cf0 ) \cf6 UIColor\cf0  *circleColor;\
+\
+\cf5 @end\cf0 \
+\cf2 //\cf0 \
+\cf2 //  EADHypnosisView.m\cf0 \
+\cf2 //  Hyponsister\cf0 \
+\cf2 //\cf0 \
+\cf2 //  Created by Ryan on 6/3/15.\cf0 \
+\cf2 //  Copyright (c) 2015 Docs Playground. All rights reserved.\cf0 \
+\cf2 //\cf0 \
+\
+\cf3 #import \cf4 "EADHypnosisView.h"\cf3 \
+\cf0 \
+\cf5 @implementation\cf0  EADHypnosisView\
+- (\cf5 id\cf0 )initWithFrame:(\cf6 CGRect\cf0 )frame\
+\{\
+    \cf5 self\cf0  = [\cf5 super\cf0  \cf8 initWithFrame\cf0 :frame];\
+    \cf5 if\cf0  (\cf5 self\cf0 ) \{\
+        \cf2 // All EADHypnosisViews start with a clear background color\cf0 \
+        \cf5 self\cf0 .\cf6 backgroundColor\cf0  = [\cf6 UIColor\cf0  \cf8 clearColor\cf0 ];\
+        \cf5 self\cf0 .\cf7 circleColor\cf0  = [\cf6 UIColor\cf0  \cf8 lightGrayColor\cf0 ];\
+    \}\
+    \cf5 return\cf0  \cf5 self\cf0 ;\
+\}\
+\
+\cf2 // Only override drawRect: if you perform custom drawing.\cf0 \
+\cf2 // An empty implementation adversely affects performance during animation.\cf0 \
+- (\cf5 void\cf0 )drawRect:(\cf6 CGRect\cf0 )rect\
+\{\
+    \cf6 CGRect\cf0  bounds = \cf5 self\cf0 .\cf6 bounds\cf0 ;\
+    \
+    \cf2 // Figure out the center of the bounds rectangle\cf0 \
+    \cf6 CGPoint\cf0  center;\
+    center.\cf6 x\cf0  = bounds.\cf6 origin\cf0 .\cf6 x\cf0  + bounds.\cf6 size\cf0 .\cf6 width\cf0  / \cf9 2.0\cf0 ;\
+    center.\cf6 y\cf0  = bounds.\cf6 origin\cf0 .\cf6 y\cf0  + bounds.\cf6 size\cf0 .\cf6 height\cf0  / \cf9 2.0\cf0 ;\
+    \
+    \cf2 // The largest circle will circumstribe the view\cf0 \
+    \cf5 float\cf0  maxRadius = \cf8 hypot\cf0 (bounds.\cf6 size\cf0 .\cf6 width\cf0 , bounds.\cf6 size\cf0 .\cf6 height\cf0 ) / \cf9 2.0\cf0 ;\
+    \
+    \cf6 UIBezierPath\cf0  *path = [[\cf6 UIBezierPath\cf0  \cf8 alloc\cf0 ] \cf8 init\cf0 ];\
+    \
+    \cf5 for\cf0  (\cf5 float\cf0  currentRadius = maxRadius; currentRadius > \cf9 0\cf0 ; currentRadius -= \cf9 20\cf0 ) \{\
+        [path \cf8 moveToPoint\cf0 :\cf8 CGPointMake\cf0 (center.\cf6 x\cf0  + currentRadius, center.\cf6 y\cf0 )];\
+        \
+        [path \cf8 addArcWithCenter\cf0 :center\
+                        \cf8 radius\cf0 :currentRadius\
+                    \cf8 startAngle\cf0 :\cf9 0.0\cf0 \
+                      \cf8 endAngle\cf0 :\cf3 M_PI\cf0  * \cf9 2.0\cf0 \
+                     \cf8 clockwise\cf0 :\cf5 YES\cf0 ];\
+    \}\
+    \
+    \cf2 // Configure line width to 10 points\cf0 \
+    path.\cf6 lineWidth\cf0  = \cf9 10\cf0 ;\
+    \
+    \cf2 // Configure the drawing color to light gray\cf0 \
+    [\cf5 self\cf0 .\cf7 circleColor\cf0  \cf8 setStroke\cf0 ];\
+    \
+    \cf2 // Draw the line!\cf0 \
+    [path \cf8 stroke\cf0 ];\
+    \
+\
+\}\
+\
+- (\cf5 void\cf0 )setCircleColor:(UIColor *)circleColor\
+\{\
+    \cf8 _circleColor\cf0  = circleColor;\
+    [\cf5 self\cf0  setNeedsDisplay];\
+\}\
+\
+\cf2 // When a finger touches the screen\cf0 \
+- (\cf5 void\cf0 )\cf6 touchesBegan\cf0 :(NSSet *)touches withEvent:(UIEvent *)event\
+\{\
+    NSLog(\cf4 @"Touch began on %@"\cf0 , \cf5 self\cf0 );\
+    \
+    \cf2 // Get 3 random numbers between 0 and 1\cf0 \
+    \cf5 float\cf0  red = (\cf8 arc4random\cf0 () % \cf9 100\cf0 ) / \cf9 100.0\cf0 ;\
+    \cf5 float\cf0  green = (arc4random() % \cf9 100\cf0 ) / \cf9 100.0\cf0 ;\
+    \cf5 float\cf0  blue = (arc4random() % \cf9 100\cf0 ) / \cf9 100.0\cf0 ;\
+    \
+    UIColor *randomColor = [UIColor \cf8 colorWithRed\cf0 :red\
+                                           \cf8 green\cf0 :green\
+                                            blue:blue\
+                                           alpha:\cf9 1.0\cf0 ];\
+    \
+    \cf5 self\cf0 .\cf8 circleColor\cf0  = randomColor;\
+    [\cf5 self\cf0  setNeedsDisplay];\
+    \
+\}\
+\
+\
+\
+\cf5 @end\cf0 \
+\cf2 //\cf0 \
+\cf2 //  EADQuizViewController.h\cf0 \
+\cf2 //  Quiz\cf0 \
+\cf2 //\cf0 \
+\cf2 //  Created by Ryan on 6/3/15.\cf0 \
+\cf2 //  Copyright (c) 2015 Docs Playground. All rights reserved.\cf0 \
+\cf2 //\cf0 \
+\
+\cf3 #import \cf4 <UIKit/UIKit.h>\cf3 \
+\cf0 \
+\cf5 @interface\cf0  EADQuizViewController : \cf6 UIViewController\cf0 \
+\
+\cf5 @end\cf0 \
+\cf2 //\cf0 \
+\cf2 //  EADQuizViewController.h\cf0 \
+\cf2 //  Quiz\cf0 \
+\cf2 //\cf0 \
+\cf2 //  Created by Ryan on 6/3/15.\cf0 \
+\cf2 //  Copyright (c) 2015 Docs Playground. All rights reserved.\cf0 \
+\cf2 //\cf0 \
+\cf3 #import \cf4 \'93EADQuizViewController.h"\cf3 \
+\cf0 \
+\cf5 @interface\cf0  \cf7 EADQuizViewController\cf0  ()\
+\
+\cf5 @property\cf0  (\cf5 nonatomic\cf0 , \cf5 assign\cf0 ) \cf5 int\cf0  currentQuestionIndex;\
+\cf5 @property\cf0  (\cf5 nonatomic\cf0 , \cf5 copy\cf0 ) \cf6 NSArray\cf0  *answers;\
+\cf5 @property\cf0  (\cf5 nonatomic\cf0 , \cf5 copy\cf0 ) \cf6 NSArray\cf0  *questions;\
+\
+\cf5 @property\cf0  (\cf5 nonatomic\cf0 , \cf5 weak\cf0 ) \cf5 IBOutlet\cf0  \cf6 UILabel\cf0  *questionLabel;\
+\cf5 @property\cf0  (\cf5 nonatomic\cf0 , \cf5 weak\cf0 ) \cf5 IBOutlet\cf0  \cf6 UILabel\cf0  *answerLabel;\
+\
+\cf5 @end\cf0 \
+\
+\cf5 @implementation\cf0  EADQuizViewController\
+\
+- (\cf5 id\cf0 )initWithNibName:(\cf6 NSString\cf0  *)nibNameOrNil bundle:(\cf6 NSBundle\cf0  *)nibBundleOrNil\
+\{\
+    \
+    \cf5 self\cf0  = [\cf5 super\cf0  \cf8 initWithNibName\cf0 :nibNameOrNil \cf8 bundle\cf0 :nibBundleOrNil];\
+    \cf5 if\cf0  (\cf5 self\cf0 ) \{\
+        \
+        \cf2 // Set the tab bar item's title\cf0 \
+        \cf5 self\cf0 .\cf6 tabBarItem\cf0 .\cf6 title\cf0  = \cf4 @"Quiz"\cf0 ;\
+        \
+        \cf2 // Create a UIImage from a file\cf0 \
+        \cf2 // This will use Hypno@2x on retina display devices\cf0 \
+        \cf6 UIImage\cf0  *image = [\cf6 UIImage\cf0  \cf8 imageNamed\cf0 :\cf4 @"Hypno.png"\cf0 ];\
+        \
+        \cf2 // Put that image on the tab bar item\cf0 \
+        \cf5 self\cf0 .\cf6 tabBarItem\cf0 .\cf6 image\cf0  = image;\
+        \
+        \cf5 self\cf0 .\cf7 questions\cf0  = \cf9 @[\cf4 @"From what is cognac made?"\cf0 ,\
+                           \cf4 @"What is 7+7?"\cf0 ,\
+                           \cf4 @"What is the capital of Vermont?"\cf9 ]\cf0 ;\
+        \
+        \cf5 self\cf0 .\cf7 answers\cf0  = \cf9 @[\cf4 @"Grapes"\cf0 ,\
+                         \cf4 @"14"\cf0 ,\
+                         \cf4 @"Montpelier"\cf9 ]\cf0 ;\
+\
+    \}\
+    \
+    \cf5 return\cf0  \cf5 self\cf0 ;\
+\
+\
+    \cf2 // Return the address of the new object\cf0 \
+    \cf5 return\cf0  \cf5 self\cf0 ;\
+\}\
+\
+- (\cf5 void\cf0 )viewDidLoad\
+\{\
+    [\cf5 super\cf0  \cf8 viewDidLoad\cf0 ];\
+    \cf2 // Do any additional setup after loading the view from its nib.\cf0 \
+\}\
+\
+- (\cf5 IBAction\cf0 )showQuestionButtonPressed:(\cf6 UIButton\cf0  *)sender\
+\{\
+    \cf2 // Step to the next question\cf0 \
+    \cf5 self\cf0 .\cf7 currentQuestionIndex\cf0 ++;\
+\
+    \cf2 // Am I pas the last question?\cf0 \
+    \cf5 if\cf0  (\cf5 self\cf0 .\cf7 currentQuestionIndex\cf0  == [\cf5 self\cf0 .\cf7 questions\cf0  \cf8 count\cf0 ]) \{\
+\
+        \cf2 // Go back to the first question\cf0 \
+        \cf5 self\cf0 .\cf7 currentQuestionIndex\cf0  = \cf9 0\cf0 ;\
+    \}\
+\
+    \cf2 // Get the string at the index in the questions array\cf0 \
+    \cf6 NSString\cf0  *question = \cf5 self\cf0 .\cf7 questions\cf0 [\cf5 self\cf0 .\cf7 currentQuestionIndex\cf0 ];\
+\
+    \cf2 // Display the string in the question label\cf0 \
+    \cf5 self\cf0 .\cf7 questionLabel\cf0 .\cf6 text\cf0  = question;\
+\
+    \cf2 // Reset the answer label\cf0 \
+    \cf5 self\cf0 .\cf7 answerLabel\cf0 .\cf6 text\cf0  = \cf4 @"???"\cf0 ;\
+\}\
+\
+- (\cf5 IBAction\cf0 )showAnswerButtonPressed:(\cf6 UIButton\cf0  *)sender\
+\{\
+    \cf2 // What is the answer to the current question?\cf0 \
+    \cf6 NSString\cf0  *answer = \cf5 self\cf0 .\cf7 answers\cf0 [\cf5 self\cf0 .\cf7 currentQuestionIndex\cf0 ];\
+\
+    \cf2 // Display it in the answer label\cf0 \
+    \cf5 self\cf0 .\cf7 answerLabel\cf0 .\cf6 text\cf0  = answer;\
+\}\
+\
+\cf5 @end\cf0 \
+\cf2 //\cf0 \
+\cf2 //  EADViewController.h\cf0 \
+\cf2 //  HypnoNerd\cf0 \
+\cf2 //\cf0 \
+\cf2 //  Created by Ryan on 6/3/15.\cf0 \
+\cf2 //  Copyright (c) 2015 Docs Playground. All rights reserved.\cf0 \
+\cf2 //\cf0 \
+\
+\cf3 #import \cf4 <UIKit/UIKit.h>\cf3 \
+\cf0 \
+\cf5 @interface\cf0  EADViewController : \cf6 UIViewController\cf0 \
+\
+\cf5 @end\cf0 \
+\cf2 //\cf0 \
+\cf2 //  EADViewController.m\cf0 \
+\cf2 //  HypnoNerd\cf0 \
+\cf2 //\cf0 \
+\cf2 //  Created by Ryan on 6/3/15.\cf0 \
+\cf2 //  Copyright (c) 2015 Docs Playground. All rights reserved.\cf0 \
+\cf2 //\cf0 \
+\
+\cf3 #import \cf4 "EADViewController.h"\cf3 \
+#import \cf4 "EADHypnosisView.h"\cf3 \
+#\
+\cf5 @interface\cf0  \cf7 EADViewController\cf0  ()\
+\
+\cf5 @end\cf0 \
+\
+\cf5 @implementation\cf0  EADViewController\{\
+    \cf7 EADHypnosisView\cf0  *backgroundView;\
+\}\
+- (\cf5 id\cf0 )initWithNibName:(\cf6 NSString\cf0  *)nibNameOrNil bundle:(\cf6 NSBundle\cf0  *)nibBundleOrNil\
+\{\
+    \cf5 self\cf0  = [\cf5 super\cf0  \cf8 initWithNibName\cf0 :nibNameOrNil \cf8 bundle\cf0 :nibBundleOrNil];\
+    \cf5 if\cf0  (\cf5 self\cf0 ) \{\
+        \
+        \cf2 // Set the tab bar item's title\cf0 \
+        \cf5 self\cf0 .\cf6 tabBarItem\cf0 .\cf6 title\cf0  = \cf4 @"Hypnotize"\cf0 ;\
+        \
+        \cf2 // Create a UIImage from a file\cf0 \
+        \cf2 // This will use Hypno@2x on retina display devices\cf0 \
+        \cf6 UIImage\cf0  *image = [\cf6 UIImage\cf0  \cf8 imageNamed\cf0 :\cf4 @"Hypno.png"\cf0 ];\
+        \
+        \cf2 // Put that image on the tab bar item\cf0 \
+        \cf5 self\cf0 .\cf6 tabBarItem\cf0 .\cf6 image\cf0  = image;\
+    \}\
+    \
+    \cf5 return\cf0  \cf5 self\cf0 ;\
+\}\
+-(\cf5 void\cf0 ) loadView\
+\{\
+     \cf7 backgroundView\cf0  = [[\cf7 EADHypnosisView\cf0  \cf8 alloc\cf0 ] \cf8 init\cf0 ];\
+    \cf5 self\cf0 .\cf6 view\cf0  = \cf7 backgroundView\cf0 ;\
+    \
+\}\
+\
+- (\cf5 void\cf0 )viewDidAppear:(\cf5 BOOL\cf0 )animated\
+\{\
+    \cf6 UISegmentedControl\cf0  *sControl = [[\cf6 UISegmentedControl\cf0  \cf8 alloc\cf0 ] \cf8 initWithItems\cf0 :\cf9 @[\cf4 @"Red"\cf0 , \cf4 @"Green"\cf0 , \cf4 @"Blue"\cf9 ]\cf0 ];\
+    sControl.\cf6 frame\cf0  = \cf8 CGRectMake\cf0 (\cf9 30\cf0 , \cf9 550\cf0 , \cf9 320\cf0 , \cf9 31\cf0 );\
+    sControl.\cf6 backgroundColor\cf0  = [\cf6 UIColor\cf0  \cf8 whiteColor\cf0 ];\
+    [\cf5 self\cf0 .\cf6 view\cf0  \cf8 addSubview\cf0 :sControl];\
+    \
+    [sControl \cf8 addTarget\cf0 :\cf5 self\cf0  \cf8 action\cf0 :\cf5 @selector\cf0 (changeCircleColor:) \cf8 forControlEvents\cf0 :\cf8 UIControlEventValueChanged\cf0 ];\
+\}\
+\
+- (\cf5 IBAction\cf0 )changeCircleColor:(\cf6 UISegmentedControl\cf0  *)segmentControl\
+\{\
+    \cf5 if\cf0  (segmentControl.\cf6 selectedSegmentIndex\cf0  == \cf9 0\cf0 ) \{\
+        \cf7 backgroundView\cf0 .\cf7 circleColor\cf0  = [\cf6 UIColor\cf0  \cf8 redColor\cf0 ];\
+        [\cf7 backgroundView\cf0  \cf8 setNeedsDisplay\cf0 ];\
+    \} \cf5 else\cf0  \cf5 if\cf0  (segmentControl.\cf6 selectedSegmentIndex\cf0  == \cf9 1\cf0 ) \{\
+        \cf7 backgroundView\cf0 .\cf7 circleColor\cf0  = [\cf6 UIColor\cf0  \cf8 greenColor\cf0 ];\
+        [\cf7 backgroundView\cf0  \cf8 setNeedsDisplay\cf0 ];\
+    \} \cf5 else\cf0  \cf5 if\cf0  (segmentControl.\cf6 selectedSegmentIndex\cf0  == \cf9 2\cf0 ) \{\
+        \cf7 backgroundView\cf0 .\cf7 circleColor\cf0  = [\cf6 UIColor\cf0  \cf8 blueColor\cf0 ];\
+        [\cf7 backgroundView\cf0  \cf8 setNeedsDisplay\cf0 ];\
+    \}\
+\}\
+\cf2 /*\
+- (void)loadView\
+\{\
+    // Create a view\
+    CGRect frame = [UIScreen mainScreen].bounds;\
+    EADHypnosisView *backgroundView = [[EADHypnosisView alloc] initWithFrame:frame];\
+    \
+    // Set it as *the* view of this view controller\
+    self.view = backgroundView;\
+\}\
+\
+- (void)viewDidLoad\
+\{\
+    // Always call the super implementation of viewDidLoad\
+    [super viewDidLoad];\
+    \
+    NSLog(@\'93EADHypnosisViewController loaded its view");\
+\}\
+ */\cf0 \
+\cf5 @end\cf0 \
+\cf2 //\cf0 \
+\cf2 //  EADReminderViewController.h\cf0 \
+\cf2 //  HypnoNerd\cf0 \
+\cf2 //\cf0 \
+\cf2 //  Created by Ryan on 6/3/15.\cf0 \
+\cf2 //  Copyright (c) 2015 Docs Playground. All rights reserved.\cf0 \
+\cf2 //\cf0 \
+\
+\cf3 #import \cf4 <UIKit/UIKit.h>\cf3 \
+\cf0 \
+\cf5 @interface\cf0  EADReminderViewController : \cf6 UIViewController\cf0 \
+\
+\cf5 @end\cf0 \
+\cf2 //\cf0 \
+\cf2 //  EADReminderViewController.m\cf0 \
+\cf2 //  HypnoNerd\cf0 \
+\cf2 //\cf0 \
+\cf2 //  Created by Ryan on 6/3/15.\cf0 \
+\cf2 //  Copyright (c) 2015 Docs Playground. All rights reserved.\cf0 \
+\cf2 //\cf0 \
+\
+\cf3 #import \cf4 "EADReminderViewController.h"\cf3 \
+\cf0 \
+\cf5 @interface\cf0  \cf7 EADReminderViewController\cf0  ()\
+\cf5 @property\cf0  (\cf5 nonatomic\cf0 , \cf5 weak\cf0 ) \cf5 IBOutlet\cf0  \cf6 UIDatePicker\cf0  *datePicker;\
+\
+\
+\
+\
+\cf5 @end\cf0 \
+\
+\cf5 @implementation\cf0  EADReminderViewController\
+- (\cf5 id\cf0 )initWithNibName:(\cf6 NSString\cf0  *)nibNameOrNil bundle:(\cf6 NSBundle\cf0  *)nibBundleOrNil\
+\{\
+    \cf5 self\cf0  = [\cf5 super\cf0  \cf8 initWithNibName\cf0 :nibNameOrNil \cf8 bundle\cf0 :nibBundleOrNil];\
+    \
+    \cf5 if\cf0  (\cf5 self\cf0 ) \{\
+        \cf2 // Set the tab bar item's title\cf0 \
+        \cf5 self\cf0 .\cf6 tabBarItem\cf0 .\cf6 title\cf0  = \cf4 @"Reminder"\cf0 ;\
+        \
+        \cf2 // Create a UIImage from a file\cf0 \
+        \cf2 // This will use Time@2x.png on retina display devices\cf0 \
+        \cf6 UIImage\cf0  *image = [\cf6 UIImage\cf0  \cf8 imageNamed\cf0 :\cf4 @"Time.png"\cf0 ];\
+        \
+        \cf2 // Put that image on the tab bar item\cf0 \
+        \cf5 self\cf0 .\cf6 tabBarItem\cf0 .\cf6 image\cf0  = image;\
+    \}\
+    \
+    \cf5 return\cf0  \cf5 self\cf0 ;\
+\}\
+\
+\
+- (\cf5 void\cf0 )viewDidLoad \{\
+    [\cf5 super\cf0  \cf8 viewDidLoad\cf0 ];\
+    \cf2 // Do any additional setup after loading the view.\cf0 \
+    \cf8 NSLog\cf0 (\cf4 @"EADReminderViewController loaded its view"\cf0 );\}\
+\
+- (\cf5 void\cf0 )viewWillAppear:(\cf5 BOOL\cf0 )animated\
+\{\
+    [\cf5 super\cf0  \cf8 viewWillAppear\cf0 :animated];\
+    \
+    \cf5 self\cf0 .\cf7 datePicker\cf0 .\cf6 minimumDate\cf0  = [\cf6 NSDate\cf0  \cf8 dateWithTimeIntervalSinceNow\cf0 :\cf9 60\cf0 ];\
+\}\
+\
+- (\cf5 IBAction\cf0 )addReminder:(\cf5 id\cf0 )sender\
+\{\
+    \cf6 NSDate\cf0  *date = \cf5 self\cf0 .\cf7 datePicker\cf0 .\cf6 date\cf0 ;\
+    \cf8 NSLog\cf0 (\cf4 @"Setting a reminder for %@"\cf0 , date);\
+    \
+    \cf6 UILocalNotification\cf0  *note = [[\cf6 UILocalNotification\cf0  \cf8 alloc\cf0 ] \cf8 init\cf0 ];\
+    note.\cf6 alertBody\cf0  = \cf4 @"Hypnotize me!"\cf0 ;\
+    note.\cf6 fireDate\cf0  = date;\
+    \
+    [[\cf6 UIApplication\cf0  \cf8 sharedApplication\cf0 ] \cf8 scheduleLocalNotification\cf0 :note];\
+\}\
+\
+\cf5 @end\cf0 \
+\
+}

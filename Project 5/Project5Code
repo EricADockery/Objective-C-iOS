@@ -1,0 +1,1335 @@
+//
+//  DateViewController.m
+//  HomePwner
+//
+//  Created by Ryan on 6/29/15.
+//  Copyright (c) 2015 Big Nerd Ranch. All rights reserved.
+//
+
+#import "EADDateViewController.h"
+#import "EADDateViewController.h"
+#import "EADItem.h"
+
+@interface EADDateViewController ()
+
+@property (weak, nonatomic) IBOutlet UIDatePicker *date;
+
+@end
+
+@implementation EADDateViewController
+
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    self.item.dateCreated = self.date.date;
+}
+@end
+//
+//  EADDateViewController.h
+//  HomePwner
+//
+//  Created by Ryan on 6/29/15.
+//  Copyright (c) 2015 Big Nerd Ranch. All rights reserved.
+//
+
+#import <UIKit/UIKit.h>
+
+@class EADItem;
+
+@interface EADDateViewController : UIViewController
+
+@property (nonatomic, strong) EADItem *item;
+
+@end
+//
+//  EADDetailViewController.m
+//  HomePwner
+//
+//  Created by Ryan on 6/29/15.
+//  Copyright (c) 2015 Big Nerd Ranch. All rights reserved.
+//
+
+#import "EADDetailViewController.h"
+#import "EADItem.h"
+#import "EADDateViewController.h"
+
+@interface EADDetailViewController () <UITextFieldDelegate>
+
+@property (weak, nonatomic) IBOutlet UITextField *nameField;
+@property (weak, nonatomic) IBOutlet UITextField *serialNumberField;
+@property (weak, nonatomic) IBOutlet UITextField *valueField;
+@property (weak, nonatomic) IBOutlet UILabel *dateLabel;
+
+
+
+@end
+
+@implementation EADDetailViewController
+- (IBAction)changeDate:(id)sender {
+    EADDateViewController *dvc = [[EADDateViewController alloc] init];
+    dvc.item = self.item;
+    [self.navigationController pushViewController:dvc animated:YES];
+    
+}
+
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
+    [self.nameField resignFirstResponder];
+    [self.serialNumberField resignFirstResponder];
+    [self.valueField resignFirstResponder];
+    
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    
+    EADItem *item = self.item;
+    
+    self.nameField.text = item.itemName;
+    self.serialNumberField.text = item.serialNumber;
+    self.valueField.text = [NSString stringWithFormat:@"%d", item.valueInDollars];
+    
+    static NSDateFormatter *dateFormatter = nil;
+    if (!dateFormatter) {
+        dateFormatter = [[NSDateFormatter alloc] init];
+        dateFormatter.dateStyle = NSDateFormatterMediumStyle;
+        dateFormatter.timeStyle = NSDateFormatterNoStyle;
+    }
+    self.dateLabel.text = [dateFormatter stringFromDate:item.dateCreated];
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    
+    [self.view endEditing:YES];
+    
+    EADItem *item = self.item;
+    item.itemName = self.nameField.text;
+    item.serialNumber = self.serialNumberField.text;
+    item.valueInDollars = [self.valueField.text intValue];
+}
+
+- (void)setItem:(EADItem *)item {
+    _item = item;
+    self.navigationItem.title = _item.itemName;
+}
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField {
+    [textField resignFirstResponder];
+    return YES;
+}
+
+@end
+//
+//  EADDetailViewController.h
+//  HomePwner
+//
+//  Created by Ryan on 6/29/15.
+//  Copyright (c) 2015 Big Nerd Ranch. All rights reserved.
+//
+
+
+#import <UIKit/UIKit.h>
+
+@class EADItem;
+
+@interface EADDetailViewController : UIViewController
+
+@property (nonatomic, strong) EADItem *item;
+
+@end
+//
+//  EADItemsViewController.m
+//  HomePwner
+//
+//  Created by John Gallagher on 1/7/14.
+//  Copyright (c) 2014 Big Nerd Ranch. All rights reserved.
+//
+
+#import "EADItemsViewController.h"
+#import "EADDetailViewController.h"
+#import "EADItemStore.h"
+#import "EADItem.h"
+
+@interface EADItemsViewController ()
+
+@end
+
+@implementation EADItemsViewController
+
+- (instancetype)init
+{
+    // Call the superclass's designated initializer
+    self = [super initWithStyle:UITableViewStylePlain];
+    if (self) {
+        UINavigationItem *navItem = self.navigationItem;
+        navItem.title = @"Homepwner";
+
+        // Create a new bar button item that will send
+        // addNewItem: to EADItemsViewController
+        UIBarButtonItem *bbi = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
+                                                                             target:self
+                                                                             action:@selector(addNewItem:)];
+
+        // Set this bar button item as the right item in the navigationItem
+        navItem.rightBarButtonItem = bbi;
+
+        navItem.leftBarButtonItem = self.editButtonItem;
+    }
+    return self;
+}
+
+- (instancetype)initWithStyle:(UITableViewStyle)style
+{
+    return [self init];
+}
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+
+    [self.tableView registerClass:[UITableViewCell class]
+           forCellReuseIdentifier:@"UITableViewCell"];
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+
+    [self.tableView reloadData];
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    return [[[EADItemStore sharedStore] allItems] count];
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    // Get a new or recycled cell
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"UITableViewCell" forIndexPath:indexPath];
+
+    // Set the text on the cell with the description of the item
+    // that is at the nth index of items, where n = row this cell
+    // will appear in on the tableview
+    NSArray *items = [[EADItemStore sharedStore] allItems];
+    EADItem *item = items[indexPath.row];
+
+    cell.textLabel.text = [item description];
+
+    return cell;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    EADDetailViewController *detailViewController = [[EADDetailViewController alloc] init];
+
+    NSArray *items = [[EADItemStore sharedStore] allItems];
+    EADItem *selectedItem = items[indexPath.row];
+
+    // Give detail view controller a pointer to the item object in row
+    detailViewController.item = selectedItem;
+
+    // Push it onto the top of the navigation controller's stack
+    [self.navigationController pushViewController:detailViewController
+                                         animated:YES];
+}
+
+- (void)   tableView:(UITableView *)tableView
+  commitEditingStyle:(UITableViewCellEditingStyle)editingStyle
+   forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    // If the table view is asking to commit a delete command...
+    if (editingStyle == UITableViewCellEditingStyleDelete) {
+        NSArray *items = [[EADItemStore sharedStore] allItems];
+        EADItem *item = items[indexPath.row];
+        [[EADItemStore sharedStore] removeItem:item];
+
+        // Also remove that row from the table view with an animation
+        [tableView deleteRowsAtIndexPaths:@[indexPath]
+                         withRowAnimation:UITableViewRowAnimationFade];
+    }
+}
+
+- (void)   tableView:(UITableView *)tableView
+  moveRowAtIndexPath:(NSIndexPath *)sourceIndexPath
+         toIndexPath:(NSIndexPath *)destinationIndexPath
+{
+    [[EADItemStore sharedStore] moveItemAtIndex:sourceIndexPath.row
+                                        toIndex:destinationIndexPath.row];
+}
+
+- (IBAction)addNewItem:(id)sender
+{
+    // Create a new EADItem and add it to the store
+    EADItem *newItem = [[EADItemStore sharedStore] createItem];
+
+    // Figure out where that item is in the array
+    NSInteger lastRow = [[[EADItemStore sharedStore] allItems] indexOfObject:newItem];
+
+    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:lastRow inSection:0];
+
+    // Insert this new row into the table.
+    [self.tableView insertRowsAtIndexPaths:@[indexPath]
+                          withRowAnimation:UITableViewRowAnimationTop];
+}
+
+@end
+//
+//  EADItemsViewController.h
+//  HomePwner
+//
+//  Created by Ryan on 6/29/15.
+//  Copyright (c) 2015 Big Nerd Ranch. All rights reserved.
+//
+
+
+#import <UIKit/UIKit.h>
+
+@interface EADItemsViewController : UITableViewController
+
+@end
+//
+//  EADItemStore.m
+//  HomePwner
+//
+//  Created by John Gallagher on 1/7/14.
+//  Copyright (c) 2014 Big Nerd Ranch. All rights reserved.
+//
+
+#import "EADItemStore.h"
+#import "EADItem.h"
+
+@interface EADItemStore ()
+
+@property (nonatomic) NSMutableArray *privateItems;
+
+@end
+
+@implementation EADItemStore
+
++ (instancetype)sharedStore
+{
+    static EADItemStore *sharedStore;
+
+    // Do I need to create a sharedStore?
+    if (!sharedStore) {
+        sharedStore = [[self alloc] initPrivate];
+    }
+
+    return sharedStore;
+}
+
+// If a programmer calls [[EADItemStore alloc] init], let him
+// know the error of his ways
+- (instancetype)init
+{
+    @throw [NSException exceptionWithName:@"Singleton"
+                                   reason:@"Use +[EADItemStore sharedStore]"
+                                 userInfo:nil];
+    return nil;
+}
+
+// Here is the real (secret) initializer
+- (instancetype)initPrivate
+{
+    self = [super init];
+    if (self) {
+        _privateItems = [[NSMutableArray alloc] init];
+    }
+    return self;
+}
+
+- (NSArray *)allItems
+{
+    return [self.privateItems copy];
+}
+
+- (EADItem *)createItem
+{
+    EADItem *item = [EADItem randomItem];
+
+    [self.privateItems addObject:item];
+
+    return item;
+}
+
+- (void)removeItem:(EADItem *)item
+{
+    [self.privateItems removeObjectIdenticalTo:item];
+}
+
+- (void)moveItemAtIndex:(NSInteger)fromIndex
+                toIndex:(NSInteger)toIndex
+{
+    if (fromIndex == toIndex) {
+        return;
+    }
+    // Get pointer to object being moved so you can re-insert it
+    EADItem *item = self.privateItems[fromIndex];
+
+    // Remove item from array
+    [self.privateItems removeObjectAtIndex:fromIndex];
+
+    // Insert item in array at new location
+    [self.privateItems insertObject:item atIndex:toIndex];
+}
+
+@end
+//
+//  EADItemStore.h
+//  HomePwner
+//
+//  Created by Ryan on 6/29/15.
+//  Copyright (c) 2015 Big Nerd Ranch. All rights reserved.
+//
+
+
+#import <Foundation/Foundation.h>
+
+@class EADItem;
+
+@interface EADItemStore : NSObject
+
+@property (nonatomic, readonly) NSArray *allItems;
+
+// Notice that this is a class method and prefixed with a + instead of a -
++ (instancetype)sharedStore;
+- (EADItem *)createItem;
+- (void)removeItem:(EADItem *)item;
+
+- (void)moveItemAtIndex:(NSInteger)fromIndex
+                toIndex:(NSInteger)toIndex;
+
+@end
+//
+//  EADItem.m
+//  RandomPossessions
+//
+//  Created by Ryan on 6/29/15.
+//  Copyright (c) 2015 Big Nerd Ranch. All rights reserved.
+//
+
+
+#import "EADItem.h"
+
+@interface EADItem ()
+
+
+@end
+
+@implementation EADItem
+
++ (id)randomItem
+{
+    // Create an array of three adjectives
+    NSArray *randomAdjectiveList = @[@"Fluffy", @"Rusty", @"Shiny"];
+    // Create an array of three nouns
+    NSArray *randomNounList = @[@"Bear", @"Spork", @"Mac"];
+    // Get the index of a random adjective/noun from the lists
+    // Note: The % operator, called the modulo operator, gives
+    // you the remainder. So adjectiveIndex is a random number
+    // from 0 to 2 inclusive.
+    NSInteger adjectiveIndex = rand() % [randomAdjectiveList count];
+    NSInteger nounIndex = rand() % [randomNounList count];
+    // Note that NSInteger is not an object, but a type definition
+    // for "unsigned long"
+    NSString *randomName = [NSString stringWithFormat:@"%@ %@",
+                                randomAdjectiveList[adjectiveIndex],
+                                randomNounList[nounIndex]];
+    int randomValue = rand() % 100;
+    NSString *randomSerialNumber = [NSString stringWithFormat:@"%c%c%c%c%c",
+                                        '0' + rand() % 10,
+                                        'A' + rand() % 26,
+                                        '0' + rand() % 10,
+                                        'A' + rand() % 26,
+                                        '0' + rand() % 10];
+    EADItem *newItem =
+        [[self alloc] initWithItemName:randomName
+                        valueInDollars:randomValue
+                          serialNumber:randomSerialNumber];
+    return newItem;
+}
+
+- (id)initWithItemName:(NSString *)name
+        valueInDollars:(int)value
+          serialNumber:(NSString *)sNumber
+{
+    // Call the superclass's designated initializer
+    self = [super init];
+    // Did the superclass's designated initializer succeed?
+    if (self) {
+        // Give the instance variables initial values
+        self.itemName = name;
+        self.serialNumber = sNumber;
+        self.valueInDollars = value;
+        self.dateCreated = [[NSDate alloc] init];
+    }
+    
+    // Return the address of the newly initialized object
+    return self;
+}
+
+- (id)init {
+    return [self initWithItemName:@"Item"
+                   valueInDollars:0
+                     serialNumber:@""];
+}
+
+- (NSString *)description
+{
+    NSString *descriptionString =
+        [[NSString alloc] initWithFormat:@"%@ (%@): Worth $%d, recorded on %@",
+                            self.itemName,
+                            self.serialNumber,
+                            self.valueInDollars,
+                            self.dateCreated];
+    return descriptionString;
+}
+
+- (void)dealloc
+{
+    NSLog(@"Destroyed: %@", self);
+}
+
+@end
+//
+//  EADItem.h
+//  RandomPossessions
+//
+//  Created by Ryan on 6/29/15.
+//  Copyright (c) 2015 Big Nerd Ranch. All rights reserved.
+//
+
+#import <Foundation/Foundation.h>
+
+@interface EADItem : NSObject
+
+@property (nonatomic, copy) NSString *itemName;
+@property (nonatomic, copy) NSString *serialNumber;
+@property (nonatomic) int valueInDollars;
+@property (nonatomic, strong) NSDate *dateCreated;
+
++ (instancetype)randomItem;
+
+// Designated initializer for EADItem
+- (instancetype)initWithItemName:(NSString *)name
+                  valueInDollars:(int)value
+                    serialNumber:(NSString *)sNumber;
+
+- (instancetype)initWithItemName:(NSString *)name;
+
+@end
+//
+//  EADAppDelegate.m
+//  HomePwner
+//
+//  Created by Ryan on 6/29/15.
+//  Copyright (c) 2015 Big Nerd Ranch. All rights reserved.
+//
+
+#import "EADAppDelegate.h"
+#import "EADItemsViewController.h"
+
+@implementation EADAppDelegate
+
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
+{
+    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    // Override point for customization after application launch.
+
+    // Create a EADItemsViewController
+    EADItemsViewController *itemsViewController = [[EADItemsViewController alloc] init];
+
+    // Create an instance of a UINavigationController
+    // its stack contains only itemsViewController
+    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:itemsViewController];
+
+    // Place navigation controller's view in the window hierarchy
+    self.window.rootViewController = navController;
+
+    self.window.backgroundColor = [UIColor whiteColor];
+    [self.window makeKeyAndVisible];
+    return YES;
+}
+
+- (void)applicationWillResignActive:(UIApplication *)application
+{
+    // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
+    // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
+}
+
+- (void)applicationDidEnterBackground:(UIApplication *)application
+{
+    // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later. 
+    // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
+}
+
+- (void)applicationWillEnterForeground:(UIApplication *)application
+{
+    // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
+}
+
+- (void)applicationDidBecomeActive:(UIApplication *)application
+{
+    // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+}
+
+- (void)applicationWillTerminate:(UIApplication *)application
+{
+    // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+}
+
+@end
+//
+//  EADAppDelegate.h
+//  HomePwner
+//
+//  Created by Ryan on 6/29/15.
+//  Copyright (c) 2015 Big Nerd Ranch. All rights reserved.
+//
+
+
+#import <UIKit/UIKit.h>
+
+@interface EADAppDelegate : UIResponder <UIApplicationDelegate>
+
+@property (strong, nonatomic) UIWindow *window;
+
+@end
+-----------------------------------------------------------------------
+Problem #2
+//
+//  EADAppDelegate.h
+//  HomePwner
+//
+//  Created by Ryan on 6/29/15.
+//  Copyright (c) 2015 Big Nerd Ranch. All rights reserved.
+//
+
+#import <UIKit/UIKit.h>
+
+@interface EADAppDelegate : UIResponder <UIApplicationDelegate>
+
+@property (strong, nonatomic) UIWindow *window;
+
+@end
+/
+//  EADAppDelegate.m
+//  HomePwner
+//
+//
+//  Created by Ryan on 6/29/15.
+//  Copyright (c) 2015 Big Nerd Ranch. All rights reserved.
+//
+
+
+#import "EADAppDelegate.h"
+#import "EADItemsViewController.h"
+
+@implementation EADAppDelegate
+
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
+{
+    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    // Override point for customization after application launch.
+
+    // Create a EADItemsViewController
+    EADItemsViewController *itemsViewController = [[EADItemsViewController alloc] init];
+
+    // Create an instance of a UINavigationController
+    // its stack contains only itemsViewController
+    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:itemsViewController];
+
+    // Place navigation controller's view in the window hierarchy
+    self.window.rootViewController = navController;
+
+    self.window.backgroundColor = [UIColor whiteColor];
+    [self.window makeKeyAndVisible];
+    return YES;
+}
+
+- (void)applicationWillResignActive:(UIApplication *)application
+{
+    // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
+    // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
+}
+
+- (void)applicationDidEnterBackground:(UIApplication *)application
+{
+    // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later. 
+    // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
+}
+
+- (void)applicationWillEnterForeground:(UIApplication *)application
+{
+    // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
+}
+
+- (void)applicationDidBecomeActive:(UIApplication *)application
+{
+    // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+}
+
+- (void)applicationWillTerminate:(UIApplication *)application
+{
+    // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+}
+
+@end
+//
+//  EADItem.h
+//  RandomPossessions
+//
+//  Created by Ryan on 6/29/15.
+//  Copyright (c) 2015 Big Nerd Ranch. All rights reserved.
+//
+
+
+#import <Foundation/Foundation.h>
+
+@interface EADItem : NSObject
+
++ (instancetype)randomItem;
+
+- (instancetype)initWithItemName:(NSString *)name
+                  valueInDollars:(int)value
+                    serialNumber:(NSString *)sNumber;
+ 
+@property (nonatomic, copy) NSString *itemName;
+@property (nonatomic, copy) NSString *serialNumber;
+@property (nonatomic) int valueInDollars;
+@property (nonatomic, readonly, strong) NSDate *dateCreated;
+
+@property (nonatomic, copy) NSString *itemKey;
+
+@end
+//
+//  EADItem.m
+//  RandomPossessions
+//
+//  Created by Ryan on 6/29/15.
+//  Copyright (c) 2015 Big Nerd Ranch. All rights reserved.
+//
+
+
+#import "EADItem.h"
+
+@interface EADItem ()
+
+@property (nonatomic, strong) NSDate *dateCreated;
+
+@end
+
+@implementation EADItem
+
++ (id)randomItem
+{
+    // Create an array of three adjectives
+    NSArray *randomAdjectiveList = @[@"Fluffy", @"Rusty", @"Shiny"];
+    // Create an array of three nouns
+    NSArray *randomNounList = @[@"Bear", @"Spork", @"Mac"];
+    // Get the index of a random adjective/noun from the lists
+    // Note: The % operator, called the modulo operator, gives
+    // you the remainder. So adjectiveIndex is a random number
+    // from 0 to 2 inclusive.
+    NSInteger adjectiveIndex = rand() % [randomAdjectiveList count];
+    NSInteger nounIndex = rand() % [randomNounList count];
+    // Note that NSInteger is not an object, but a type definition
+    // for "unsigned long"
+    NSString *randomName = [NSString stringWithFormat:@"%@ %@",
+                                randomAdjectiveList[adjectiveIndex],
+                                randomNounList[nounIndex]];
+    int randomValue = rand() % 100;
+    NSString *randomSerialNumber = [NSString stringWithFormat:@"%c%c%c%c%c",
+                                        '0' + rand() % 10,
+                                        'A' + rand() % 26,
+                                        '0' + rand() % 10,
+                                        'A' + rand() % 26,
+                                        '0' + rand() % 10];
+    EADItem *newItem =
+        [[self alloc] initWithItemName:randomName
+                        valueInDollars:randomValue
+                          serialNumber:randomSerialNumber];
+    return newItem;
+}
+
+- (id)initWithItemName:(NSString *)name
+        valueInDollars:(int)value
+          serialNumber:(NSString *)sNumber
+{
+    // Call the superclass's designated initializer
+    self = [super init];
+    // Did the superclass's designated initializer succeed?
+    if (self) {
+        // Give the instance variables initial values
+        self.itemName = name;
+        self.serialNumber = sNumber;
+        self.valueInDollars = value;
+        self.dateCreated = [[NSDate alloc] init];
+
+        // Create a NSUUID object - and get its string representation
+        NSUUID *uuid = [[NSUUID alloc] init];
+        NSString *key = [uuid UUIDString];
+        _itemKey = key;
+    }
+    
+    // Return the address of the newly initialized object
+    return self;
+}
+
+- (id)init {
+    return [self initWithItemName:@"Item"
+                   valueInDollars:0
+                     serialNumber:@""];
+}
+
+- (NSString *)description
+{
+    NSString *descriptionString =
+        [[NSString alloc] initWithFormat:@"%@ (%@): Worth $%d, recorded on %@",
+                            self.itemName,
+                            self.serialNumber,
+                            self.valueInDollars,
+                            self.dateCreated];
+    return descriptionString;
+}
+
+- (void)dealloc
+{
+    NSLog(@"Destroyed: %@", self);
+}
+
+@end
+//
+//  EADItemStore.h
+//  HomePwner
+//
+//  Created by Ryan on 6/29/15.
+//  Copyright (c) 2015 Big Nerd Ranch. All rights reserved.
+//
+
+#import <Foundation/Foundation.h>
+
+@class EADItem;
+
+@interface EADItemStore : NSObject
+
+@property (nonatomic, readonly) NSArray *allItems;
+
+// Notice that this is a class method and prefixed with a + instead of a -
++ (instancetype)sharedStore;
+- (EADItem *)createItem;
+- (void)removeItem:(EADItem *)item;
+
+- (void)moveItemAtIndex:(NSInteger)fromIndex
+                toIndex:(NSInteger)toIndex;
+
+@end
+//
+//  EADItemStore.m
+//  HomePwner
+//
+//  Created by Ryan on 6/29/15.
+//  Copyright (c) 2015 Big Nerd Ranch. All rights reserved.
+//
+
+
+#import "EADItemStore.h"
+#import "EADItem.h"
+#import "EADImageStore.h"
+
+@interface EADItemStore ()
+
+@property (nonatomic) NSMutableArray *privateItems;
+
+@end
+
+@implementation EADItemStore
+
++ (instancetype)sharedStore
+{
+    static EADItemStore *sharedStore;
+
+    // Do I need to create a sharedStore?
+    if (!sharedStore) {
+        sharedStore = [[self alloc] initPrivate];
+    }
+
+    return sharedStore;
+}
+
+// If a programmer calls [[EADItemStore alloc] init], let him
+// know the error of his ways
+- (instancetype)init
+{
+    @throw [NSException exceptionWithName:@"Singleton"
+                                   reason:@"Use +[EADItemStore sharedStore]"
+                                 userInfo:nil];
+    return nil;
+}
+
+// Here is the real (secret) initializer
+- (instancetype)initPrivate
+{
+    self = [super init];
+    if (self) {
+        _privateItems = [[NSMutableArray alloc] init];
+    }
+    return self;
+}
+
+- (NSArray *)allItems
+{
+    return [self.privateItems copy];
+}
+
+- (EADItem *)createItem
+{
+    EADItem *item = [EADItem randomItem];
+
+    [self.privateItems addObject:item];
+
+    return item;
+}
+
+- (void)removeItem:(EADItem *)item
+{
+    NSString *key = item.itemKey;
+    if (key) {
+        [[EADImageStore sharedStore] deleteImageForKey:key];
+    }
+
+    [self.privateItems removeObjectIdenticalTo:item];
+}
+
+- (void)moveItemAtIndex:(NSInteger)fromIndex
+                toIndex:(NSInteger)toIndex
+{
+    if (fromIndex == toIndex) {
+        return;
+    }
+    // Get pointer to object being moved so you can re-insert it
+    EADItem *item = self.privateItems[fromIndex];
+
+    // Remove item from array
+    [self.privateItems removeObjectAtIndex:fromIndex];
+
+    // Insert item in array at new location
+    [self.privateItems insertObject:item atIndex:toIndex];
+}
+
+@end
+//
+//  EADImageStore.h
+//  HomePwner
+//
+//  Created by Ryan on 6/29/15.
+//  Copyright (c) 2015 Big Nerd Ranch. All rights reserved.
+//
+
+#import <Foundation/Foundation.h>
+
+@interface EADImageStore : NSObject
+
++ (instancetype)sharedStore;
+
+- (void)setImage:(UIImage *)image forKey:(NSString *)key;
+- (UIImage *)imageForKey:(NSString *)key;
+- (void)deleteImageForKey:(NSString *)key;
+
+@end
+//
+//  EADImageStore.m
+//  HomePwner
+//
+//  Created by Ryan on 6/29/15.
+//  Copyright (c) 2015 Big Nerd Ranch. All rights reserved.
+//
+
+
+#import "EADImageStore.h"
+
+@interface EADImageStore ()
+
+@property (nonatomic, strong) NSMutableDictionary *dictionary;
+
+@end
+
+@implementation EADImageStore
+
++ (instancetype)sharedStore
+{
+    static EADImageStore *sharedStore;
+
+    if (!sharedStore) {
+        sharedStore = [[self alloc] initPrivate];
+    }
+
+    return sharedStore;
+}
+
+// No one should call init
+- (instancetype)init
+{
+    @throw [NSException exceptionWithName:@"Singleton"
+                                   reason:@"Use +[EADImageStore sharedStore]"
+                                 userInfo:nil];
+    return nil;
+}
+
+// Secret designated initializer
+- (instancetype)initPrivate
+{
+    self = [super init];
+
+    if (self) {
+        _dictionary = [[NSMutableDictionary alloc] init];
+    }
+
+    return self;
+}
+
+- (void)setImage:(UIImage *)image forKey:(NSString *)key
+{
+    self.dictionary[key] = image;
+}
+
+- (UIImage *)imageForKey:(NSString *)key
+{
+    return self.dictionary[key];
+}
+
+- (void)deleteImageForKey:(NSString *)key
+{
+    if (!key) {
+        return;
+    }
+    [self.dictionary removeObjectForKey:key];
+}
+
+@end
+//
+//  EADItemsViewController.h
+//  HomePwner
+//
+//  Created by Ryan on 6/29/15.
+//  Copyright (c) 2015 Big Nerd Ranch. All rights reserved.
+//
+
+
+#import <UIKit/UIKit.h>
+
+@interface EADItemsViewController : UITableViewController
+
+@end
+//
+//  EADItemsViewController.m
+//  HomePwner
+//
+//  Created by Ryan on 6/29/15.
+//  Copyright (c) 2015 Big Nerd Ranch. All rights reserved.
+//
+
+#import "EADItemsViewController.h"
+#import "EADDetailViewController.h"
+#import "EADItemStore.h"
+#import "EADItem.h"
+
+@interface EADItemsViewController ()
+
+@end
+
+@implementation EADItemsViewController
+
+- (instancetype)init
+{
+    // Call the superclass's designated initializer
+    self = [super initWithStyle:UITableViewStylePlain];
+    if (self) {
+        UINavigationItem *navItem = self.navigationItem;
+        navItem.title = @"Homepwner";
+
+        // Create a new bar button item that will send
+        // addNewItem: to EADItemsViewController
+        UIBarButtonItem *bbi = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
+                                                                             target:self
+                                                                             action:@selector(addNewItem:)];
+
+        // Set this bar button item as the right item in the navigationItem
+        navItem.rightBarButtonItem = bbi;
+
+        navItem.leftBarButtonItem = self.editButtonItem;
+    }
+    return self;
+}
+
+- (instancetype)initWithStyle:(UITableViewStyle)style
+{
+    return [self init];
+}
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+
+    [self.tableView registerClass:[UITableViewCell class]
+           forCellReuseIdentifier:@"UITableViewCell"];
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+
+    [self.tableView reloadData];
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    return [[[EADItemStore sharedStore] allItems] count];
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    // Get a new or recycled cell
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"UITableViewCell" forIndexPath:indexPath];
+
+    // Set the text on the cell with the description of the item
+    // that is at the nth index of items, where n = row this cell
+    // will appear in on the tableview
+    NSArray *items = [[EADItemStore sharedStore] allItems];
+    EADItem *item = items[indexPath.row];
+
+    cell.textLabel.text = [item description];
+
+    return cell;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    EADDetailViewController *detailViewController = [[EADDetailViewController alloc] init];
+
+    NSArray *items = [[EADItemStore sharedStore] allItems];
+    EADItem *selectedItem = items[indexPath.row];
+
+    // Give detail view controller a pointer to the item object in row
+    detailViewController.item = selectedItem;
+
+    // Push it onto the top of the navigation controller's stack
+    [self.navigationController pushViewController:detailViewController
+                                         animated:YES];
+}
+
+- (void)   tableView:(UITableView *)tableView
+  commitEditingStyle:(UITableViewCellEditingStyle)editingStyle
+   forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    // If the table view is asking to commit a delete command...
+    if (editingStyle == UITableViewCellEditingStyleDelete) {
+        NSArray *items = [[EADItemStore sharedStore] allItems];
+        EADItem *item = items[indexPath.row];
+        [[EADItemStore sharedStore] removeItem:item];
+
+        // Also remove that row from the table view with an animation
+        [tableView deleteRowsAtIndexPaths:@[indexPath]
+                         withRowAnimation:UITableViewRowAnimationFade];
+    }
+}
+
+- (void)   tableView:(UITableView *)tableView
+  moveRowAtIndexPath:(NSIndexPath *)sourceIndexPath
+         toIndexPath:(NSIndexPath *)destinationIndexPath
+{
+    [[EADItemStore sharedStore] moveItemAtIndex:sourceIndexPath.row
+                                        toIndex:destinationIndexPath.row];
+}
+
+- (IBAction)addNewItem:(id)sender
+{
+    // Create a new EADItem and add it to the store
+    EADItem *newItem = [[EADItemStore sharedStore] createItem];
+
+    // Figure out where that item is in the array
+    NSInteger lastRow = [[[EADItemStore sharedStore] allItems] indexOfObject:newItem];
+
+    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:lastRow inSection:0];
+
+    // Insert this new row into the table.
+    [self.tableView insertRowsAtIndexPaths:@[indexPath]
+                          withRowAnimation:UITableViewRowAnimationTop];
+}
+
+@end
+//
+//  EADDetailViewController.h
+//  HomePwner
+//
+//  Created by Ryan on 6/29/15.
+//  Copyright (c) 2015 Big Nerd Ranch. All rights reserved.
+//
+
+#import <UIKit/UIKit.h>
+
+@class EADItem;
+
+@interface EADDetailViewController : UIViewController
+
+@property (nonatomic, strong) EADItem *item;
+
+@end
+//
+//  EADDetailViewController.m
+//  HomePwner
+//
+//  Created by Ryan on 6/29/15.
+//  Copyright (c) 2015 Big Nerd Ranch. All rights reserved.
+//
+
+#import "EADDetailViewController.h"
+#import "EADItem.h"
+#import "EADImageStore.h"
+
+@interface EADDetailViewController () <UINavigationControllerDelegate, UIImagePickerControllerDelegate,
+    UITextFieldDelegate>
+
+@property (weak, nonatomic) IBOutlet UITextField *nameField;
+@property (weak, nonatomic) IBOutlet UITextField *serialNumberField;
+@property (weak, nonatomic) IBOutlet UITextField *valueField;
+@property (weak, nonatomic) IBOutlet UILabel *dateLabel;
+@property (weak, nonatomic) IBOutlet UIImageView *imageView;
+@property (weak, nonatomic) IBOutlet UIToolbar *toolbar;
+
+- (IBAction)takePicture:(id)sender;
+- (IBAction)backgroundTapped:(id)sender;
+
+@end
+
+@implementation EADDetailViewController
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+
+    EADItem *item = self.item;
+
+    self.nameField.text = item.itemName;
+    self.serialNumberField.text = item.serialNumber;
+    self.valueField.text = [NSString stringWithFormat:@"%d", item.valueInDollars];
+
+    // You need a NSDateFormatter that will turn a date into a simple date string
+    static NSDateFormatter *dateFormatter;
+    if (!dateFormatter) {
+        dateFormatter = [[NSDateFormatter alloc] init];
+        dateFormatter.dateStyle = NSDateFormatterMediumStyle;
+        dateFormatter.timeStyle = NSDateFormatterNoStyle;
+    }
+
+    // Use filtered NSDate object to set dateLabel contents
+    self.dateLabel.text = [dateFormatter stringFromDate:item.dateCreated];
+
+    NSString *itemKey = self.item.itemKey;
+    if (itemKey) {
+        // Get image for image key from the image store
+        UIImage *imageToDisplay = [[EADImageStore sharedStore] imageForKey:itemKey];
+
+        // Use that image to put on the screen in imageView
+        self.imageView.image = imageToDisplay;
+    } else {
+        // Clear the imageView
+        self.imageView.image = nil;
+    }
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+
+    // Clear first responder
+    [self.view endEditing:YES];
+
+    // "Save" changes to item
+    EADItem *item = self.item;
+    item.itemName = self.nameField.text;
+    item.serialNumber = self.serialNumberField.text;
+    item.valueInDollars = [self.valueField.text intValue];
+}
+
+- (void)setItem:(EADItem *)item
+{
+    _item = item;
+    self.navigationItem.title = _item.itemName;
+}
+
+- (IBAction)takePicture:(id)sender
+{
+    UIImagePickerController *imagePicker = [[UIImagePickerController alloc] init];
+
+
+    // If the device ahs a camera, take a picture, otherwise,
+    // just pick from the photo library
+    if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
+        imagePicker.sourceType = UIImagePickerControllerSourceTypeCamera;
+    } else {
+        imagePicker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+    }
+    
+
+    imagePicker.delegate = self;
+    //allows imagepicker editing
+    imagePicker.allowsEditing =YES;
+    
+    
+    // Place image picker on the screen
+    [self presentViewController:imagePicker animated:YES completion:NULL];
+}
+
+- (IBAction)backgroundTapped:(id)sender
+{
+    [self.view endEditing:YES];
+}
+- (IBAction)removeimage:(id)sender {
+    //remove the image
+    [[EADImageStore sharedStore] deleteImageForKey:self.item.itemKey];
+    
+    //update the view with no image
+    self.imageView.image = [UIImage imageNamed:@""];
+    
+
+}
+
+- (void)imagePickerController:(UIImagePickerController *)picker
+didFinishPickingMediaWithInfo:(NSDictionary *)info
+{
+    NSString *oldKey = self.item.itemKey;
+
+    // Did the item already have an image?
+    if (oldKey) {
+        // Delete the old image
+        [[EADImageStore sharedStore] deleteImageForKey:oldKey];
+    }
+
+    // Get picked image from info dictionary or get new image
+    UIImage *image;
+    
+    if (info[UIImagePickerControllerEditedImage]) {
+        image = info[UIImagePickerControllerEditedImage];
+    } else {
+        image = info[UIImagePickerControllerOriginalImage];
+    }
+
+    // Store the image in the EADImageStore for this key
+    [[EADImageStore sharedStore] setImage:image forKey:self.item.itemKey];
+
+    // Put that image onto the screen in our image view
+    self.imageView.image = image;
+
+    // Take image picker off the screen -
+    // you must call this dismiss method
+    [self dismissViewControllerAnimated:YES completion:NULL];
+}
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+    [textField resignFirstResponder];
+    return YES;
+}
+
+@end

@@ -1,0 +1,691 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1347\cocoasubrtf570
+{\fonttbl\f0\fswiss\fcharset0 Helvetica;\f1\fnil\fcharset0 Menlo-Regular;}
+{\colortbl;\red255\green255\blue255;\red0\green116\blue0;\red100\green56\blue32;\red196\green26\blue22;
+\red170\green13\blue145;\red92\green38\blue153;\red63\green110\blue116;\red46\green13\blue110;\red28\green0\blue207;
+\red38\green71\blue75;}
+\margl1440\margr1440\vieww10800\viewh8400\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
+
+\f0\fs24 \cf0 Project 4 Problem 1\
+\pard\tx529\pardeftab529\pardirnatural
+
+\f1\fs22 \cf2 \CocoaLigature0 //\cf0 \
+\cf2 //  EADAppDelegate.h\cf0 \
+\cf2 //  Hypnosister\cf0 \
+\
+\cf3 #import \cf4 <UIKit/UIKit.h>\cf3 \
+\cf0 \
+\cf5 @interface\cf0  EADAppDelegate : \cf6 UIResponder\cf0  <\cf6 UIApplicationDelegate\cf0 >\
+\
+\cf5 @property\cf0  (\cf5 strong\cf0 , \cf5 nonatomic\cf0 ) \cf6 UIWindow\cf0  *window;\
+\
+\cf5 @end\cf0 \
+\cf2 //  EADAppDelegate.m\cf0 \
+\cf2 //  Hypnosister\cf0 \
+\
+\
+\cf3 #import \cf4 "EADAppDelegate.h"\cf3 \
+#import \cf4 "EADHypnosisView.h"\cf3 \
+\cf0 \
+\cf5 @implementation\cf0  EADAppDelegate\
+\
+- (\cf5 BOOL\cf0 )application:(\cf6 UIApplication\cf0  *)application didFinishLaunchingWithOptions:(\cf6 NSDictionary\cf0  *)launchOptions\
+\{\
+    \cf5 self\cf0 .\cf7 window\cf0  = [[\cf6 UIWindow\cf0  \cf8 alloc\cf0 ] \cf8 initWithFrame\cf0 :[[\cf6 UIScreen\cf0  \cf8 mainScreen\cf0 ] \cf8 bounds\cf0 ]];\
+    \cf2 // Override point for customization after application launch.\cf0 \
+\
+    \cf2 // Create CGRects for frames\cf0 \
+    \cf6 CGRect\cf0  screenRect = \cf5 self\cf0 .\cf7 window\cf0 .\cf6 bounds\cf0 ;\
+    \cf6 CGRect\cf0  bigRect = screenRect;\
+    bigRect.\cf6 size\cf0 .\cf6 width\cf0  *= \cf9 2.0\cf0 ;\
+\
+    \cf2 // Create a screen-sized scroll view and add it to the window\cf0 \
+    \cf6 UIScrollView\cf0  *scrollView = [[\cf6 UIScrollView\cf0  \cf8 alloc\cf0 ] \cf8 initWithFrame\cf0 :screenRect];\
+    scrollView.\cf6 pagingEnabled\cf0  = \cf5 YES\cf0 ;\
+    [\cf5 self\cf0 .\cf7 window\cf0  \cf8 addSubview\cf0 :scrollView];\
+\
+    \cf2 // Create a screen-sized hypnosis view and add it to the scroll view\cf0 \
+    \cf7 EADHypnosisView\cf0  *hypnosisView = [[\cf7 EADHypnosisView\cf0  \cf8 alloc\cf0 ] \cf8 initWithFrame\cf0 :screenRect];\
+    [scrollView \cf8 addSubview\cf0 :hypnosisView];\
+\
+    \
+    \cf2 // Tell the scroll view how big its content area is\cf0 \
+    scrollView.\cf6 contentSize\cf0  = bigRect.\cf6 size\cf0 ;\
+    \
+    \
+    \cf2 // scroll details\cf0 \
+    scrollView.\cf6 minimumZoomScale\cf0 =\cf9 0.5\cf0 ;\
+    scrollView.\cf6 maximumZoomScale\cf0 =\cf9 4.0\cf0 ;\
+    scrollView.\cf6 contentSize\cf0 =\cf8 CGSizeMake\cf0 (\cf9 1280\cf0 , \cf9 960\cf0 );\
+    scrollView.\cf6 delegate\cf0 =\cf5 self\cf0 ;\
+\
+    \cf5 self\cf0 .\cf7 window\cf0 .\cf6 backgroundColor\cf0  = [\cf6 UIColor\cf0  \cf8 whiteColor\cf0 ];\
+    [\cf5 self\cf0 .\cf7 window\cf0  \cf8 makeKeyAndVisible\cf0 ];\
+    \cf5 return\cf0  \cf5 YES\cf0 ;\
+\}\
+- (\cf6 CGRect\cf0 )zoomRectForScrollView:(\cf6 UIScrollView\cf0  *)scrollView withScale:(\cf5 float\cf0 )scale withCenter:(\cf6 CGPoint\cf0 )center \{\
+    \
+    \cf6 CGRect\cf0  zoomRect;\
+    \
+    \cf2 // The zoom rect is in the content view's coordinates.\cf0 \
+    \cf2 // At a zoom scale of 1.0, it would be the size of the\cf0 \
+    \cf2 // imageScrollView's bounds.\cf0 \
+    \cf2 // As the zoom scale decreases, so more content is visible,\cf0 \
+    \cf2 // the size of the rect grows.\cf0 \
+    zoomRect.\cf6 size\cf0 .\cf6 height\cf0  = scrollView.\cf6 frame\cf0 .\cf6 size\cf0 .\cf6 height\cf0  / scale;\
+    zoomRect.\cf6 size\cf0 .\cf6 width\cf0   = scrollView.\cf6 frame\cf0 .\cf6 size\cf0 .\cf6 width\cf0   / scale;\
+    \
+    \cf2 // choose an origin so as to get the right center.\cf0 \
+    zoomRect.\cf6 origin\cf0 .\cf6 x\cf0  = center.\cf6 x\cf0  - (zoomRect.\cf6 size\cf0 .\cf6 width\cf0   / \cf9 2.0\cf0 );\
+    zoomRect.\cf6 origin\cf0 .\cf6 y\cf0  = center.\cf6 y\cf0  - (zoomRect.\cf6 size\cf0 .\cf6 height\cf0  / \cf9 2.0\cf0 );\
+    \
+    \cf5 return\cf0  zoomRect;\
+\}\
+\
+\
+- (\cf6 UIView\cf0  *)viewForZoomingInScrollView:(\cf6 UIScrollView\cf0  *)scrollView\
+\{\
+    \cf5 return\cf0  \cf5 self\cf0 .\cf7 window\cf0 ;\
+\}\
+\
+- (\cf5 void\cf0 )applicationWillResignActive:(\cf6 UIApplication\cf0  *)application\
+\{\
+    \cf2 // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.\cf0 \
+    \cf2 // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.\cf0 \
+\}\
+\
+- (\cf5 void\cf0 )applicationDidEnterBackground:(\cf6 UIApplication\cf0  *)application\
+\{\
+    \cf2 // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later. \cf0 \
+    \cf2 // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.\cf0 \
+\}\
+\
+- (\cf5 void\cf0 )applicationWillEnterForeground:(\cf6 UIApplication\cf0  *)application\
+\{\
+    \cf2 // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.\cf0 \
+\}\
+\
+- (\cf5 void\cf0 )applicationDidBecomeActive:(\cf6 UIApplication\cf0  *)application\
+\{\
+    \cf2 // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.\cf0 \
+\}\
+\
+- (\cf5 void\cf0 )applicationWillTerminate:(\cf6 UIApplication\cf0  *)application\
+\{\
+    \cf2 // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.\cf0 \
+\}\
+\
+\cf5 @end\cf0 \
+\cf2 //\cf0 \
+\cf2 //  EADHypnosisView.h\cf0 \
+\cf2 //  Hypnosister\cf0 \
+\
+\
+\cf3 #import \cf4 <UIKit/UIKit.h>\cf3 \
+\cf0 \
+\cf5 @interface\cf0  EADHypnosisView : \cf6 UIView\cf0 \
+\
+\cf5 @end\cf0 \
+\cf2 //\cf0 \
+\cf2 //  EADHypnosisView.m\cf0 \
+\cf2 //  Hypnosister\cf0 \
+\cf2 //\cf0 \
+\
+\
+\cf3 #import \cf4 "EADHypnosisView.h"\cf3 \
+\cf0 \
+\cf5 @interface\cf0  \cf7 EADHypnosisView\cf0  ()\
+\
+\cf5 @property\cf0  (\cf5 nonatomic\cf0 , \cf5 strong\cf0 ) \cf6 UIColor\cf0  *circleColor;\
+\
+\cf5 @end\cf0 \
+\
+\cf5 @implementation\cf0  EADHypnosisView\
+\
+- (\cf5 id\cf0 )initWithFrame:(\cf6 CGRect\cf0 )frame\
+\{\
+    \cf5 self\cf0  = [\cf5 super\cf0  \cf8 initWithFrame\cf0 :frame];\
+    \cf5 if\cf0  (\cf5 self\cf0 ) \{\
+        \cf2 // All EADHypnosisViews start with a clear background color\cf0 \
+        \cf5 self\cf0 .\cf6 backgroundColor\cf0  = [\cf6 UIColor\cf0  \cf8 clearColor\cf0 ];\
+        \cf5 self\cf0 .\cf7 circleColor\cf0  = [\cf6 UIColor\cf0  \cf8 lightGrayColor\cf0 ];\
+    \}\
+    \cf5 return\cf0  \cf5 self\cf0 ;\
+\}\
+\
+\cf2 // Only override drawRect: if you perform custom drawing.\cf0 \
+\cf2 // An empty implementation adversely affects performance during animation.\cf0 \
+- (\cf5 void\cf0 )drawRect:(\cf6 CGRect\cf0 )rect\
+\{\
+    \cf6 CGRect\cf0  bounds = \cf5 self\cf0 .\cf6 bounds\cf0 ;\
+\
+    \cf2 // Figure out the center of the bounds rectangle\cf0 \
+    \cf6 CGPoint\cf0  center;\
+    center.\cf6 x\cf0  = bounds.\cf6 origin\cf0 .\cf6 x\cf0  + bounds.\cf6 size\cf0 .\cf6 width\cf0  / \cf9 2.0\cf0 ;\
+    center.\cf6 y\cf0  = bounds.\cf6 origin\cf0 .\cf6 y\cf0  + bounds.\cf6 size\cf0 .\cf6 height\cf0  / \cf9 2.0\cf0 ;\
+\
+    \cf2 // The largest circle will circumstribe the view\cf0 \
+    \cf5 float\cf0  maxRadius = \cf8 hypot\cf0 (bounds.\cf6 size\cf0 .\cf6 width\cf0 , bounds.\cf6 size\cf0 .\cf6 height\cf0 ) / \cf9 2.0\cf0 ;\
+\
+    \cf6 UIBezierPath\cf0  *path = [[\cf6 UIBezierPath\cf0  \cf8 alloc\cf0 ] \cf8 init\cf0 ];\
+\
+    \cf5 for\cf0  (\cf5 float\cf0  currentRadius = maxRadius; currentRadius > \cf9 0\cf0 ; currentRadius -= \cf9 20\cf0 ) \{\
+        [path \cf8 moveToPoint\cf0 :\cf8 CGPointMake\cf0 (center.\cf6 x\cf0  + currentRadius, center.\cf6 y\cf0 )];\
+\
+        [path \cf8 addArcWithCenter\cf0 :center\
+                        \cf8 radius\cf0 :currentRadius\
+                    \cf8 startAngle\cf0 :\cf9 0.0\cf0 \
+                      \cf8 endAngle\cf0 :\cf3 M_PI\cf0  * \cf9 2.0\cf0 \
+                     \cf8 clockwise\cf0 :\cf5 YES\cf0 ];\
+    \}\
+\
+    \cf2 // Configure line width to 10 points\cf0 \
+    path.\cf6 lineWidth\cf0  = \cf9 10\cf0 ;\
+\
+    \cf2 // Configure the drawing color to light gray\cf0 \
+    [\cf5 self\cf0 .\cf7 circleColor\cf0  \cf8 setStroke\cf0 ];\
+\
+    \cf2 // Draw the line!\cf0 \
+    [path \cf8 stroke\cf0 ];\
+\}\
+\
+- (\cf5 void\cf0 )setCircleColor:(\cf6 UIColor\cf0  *)circleColor\
+\{\
+    \cf7 _circleColor\cf0  = circleColor;\
+    [\cf5 self\cf0  \cf8 setNeedsDisplay\cf0 ];\
+\}\
+\
+\cf2 // When a finger touches the screen\cf0 \
+- (\cf5 void\cf0 )touchesBegan:(\cf6 NSSet\cf0  *)touches withEvent:(\cf6 UIEvent\cf0  *)event\
+\{\
+    \cf8 NSLog\cf0 (\cf4 @"Touch began on %@"\cf0 , \cf5 self\cf0 );\
+\
+    \cf2 // Get 3 random numbers between 0 and 1\cf0 \
+    \cf5 float\cf0  red = (\cf8 arc4random\cf0 () % \cf9 100\cf0 ) / \cf9 100.0\cf0 ;\
+    \cf5 float\cf0  green = (\cf8 arc4random\cf0 () % \cf9 100\cf0 ) / \cf9 100.0\cf0 ;\
+    \cf5 float\cf0  blue = (\cf8 arc4random\cf0 () % \cf9 100\cf0 ) / \cf9 100.0\cf0 ;\
+\
+    \cf6 UIColor\cf0  *randomColor = [\cf6 UIColor\cf0  \cf8 colorWithRed\cf0 :red\
+                                           \cf8 green\cf0 :green\
+                                            \cf8 blue\cf0 :blue\
+                                           \cf8 alpha\cf0 :\cf9 1.0\cf0 ];\
+\
+    \cf5 self\cf0 .\cf7 circleColor\cf0  = randomColor;\
+\}\
+\
+\cf5 @end\cf0 \
+\cf2 //\cf0 \
+\cf2 //  main.m\cf0 \
+\cf2 //  Hypnosister\cf0 \
+\cf2 //\cf0 \
+\
+\
+\cf3 #import \cf4 <UIKit/UIKit.h>\cf3 \
+\cf0 \
+\cf3 #import \cf4 "EADAppDelegate.h"\cf3 \
+\cf0 \
+\cf5 int\cf0  main(\cf5 int\cf0  argc, \cf5 char\cf0  * argv[])\
+\{\
+    \cf5 @autoreleasepool\cf0  \{\
+        \cf5 return\cf0  \cf8 UIApplicationMain\cf0 (argc, argv, \cf5 nil\cf0 , \cf8 NSStringFromClass\cf0 ([\cf7 EADAppDelegate\cf0  \cf8 class\cf0 ]));\
+    \}\
+\}\
+\
+\
+Problem 2-3\
+\cf2 /\cf0 \
+\cf2 //  EADAppDelegate.h\cf0 \
+\cf2 //  HomePwner\cf0 \
+\cf2 //\cf0 \
+\cf2 //  Created by Ryan on 6/13/14.\cf0 \
+\cf2 //  Copyright (c) Docs Playground Inc. All rights reserved.\cf0 \
+\cf2 //\cf0 \
+\
+\cf3 #import \cf4 <UIKit/UIKit.h>\cf3 \
+\cf0 \
+\cf5 @interface\cf0  EADAppDelegate : \cf6 UIResponder\cf0  <\cf6 UIApplicationDelegate\cf0 >\
+\
+\cf5 @property\cf0  (\cf5 strong\cf0 , \cf5 nonatomic\cf0 ) \cf6 UIWindow\cf0  *window;\
+\
+\cf5 @end\cf0 \
+\cf2 //\cf0 \
+\cf2 //  EADAppDelegate.m\cf0 \
+\cf2 //  HomePwner\cf0 \
+\cf2 //\cf0 \
+\cf2 //  Created by Ryan on 6/13/14.\cf0 \
+\cf2 //  Copyright (c) Docs Playground Inc. All rights reserved.\cf0 \
+\cf2 //\cf0 \
+\
+\cf3 #import \cf4 "EADAppDelegate.h"\cf3 \
+#import \cf4 "EADItemsViewController.h"\cf3 \
+\cf0 \
+\cf5 @implementation\cf0  EADAppDelegate\
+\
+- (\cf5 BOOL\cf0 )application:(\cf6 UIApplication\cf0  *)application didFinishLaunchingWithOptions:(\cf6 NSDictionary\cf0  *)launchOptions\
+\{\
+    \cf5 self\cf0 .\cf7 window\cf0  = [[\cf6 UIWindow\cf0  \cf8 alloc\cf0 ] \cf8 initWithFrame\cf0 :[[\cf6 UIScreen\cf0  \cf8 mainScreen\cf0 ] \cf8 bounds\cf0 ]];\
+    \cf2 // Override point for customization after application launch.\cf0 \
+\
+    \cf2 // Create a BNRItemsViewController\cf0 \
+    \cf7 EADItemsViewController\cf0  *itemsViewController = [[\cf7 EADItemsViewController\cf0  \cf8 alloc\cf0 ] \cf8 init\cf0 ];\
+\
+    \cf2 // Place a BNRItemsViewController's table view in the window hierarchy\cf0 \
+    \cf5 self\cf0 .\cf7 window\cf0 .\cf6 rootViewController\cf0  = itemsViewController;\
+\
+    \cf5 self\cf0 .\cf7 window\cf0 .\cf6 backgroundColor\cf0  = [\cf6 UIColor\cf0  \cf8 whiteColor\cf0 ];\
+    [\cf5 self\cf0 .\cf7 window\cf0  \cf8 makeKeyAndVisible\cf0 ];\
+    \cf5 return\cf0  \cf5 YES\cf0 ;\
+\}\
+\
+- (\cf5 void\cf0 )applicationWillResignActive:(\cf6 UIApplication\cf0  *)application\
+\{\
+    \cf2 // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.\cf0 \
+    \cf2 // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.\cf0 \
+\}\
+\
+- (\cf5 void\cf0 )applicationDidEnterBackground:(\cf6 UIApplication\cf0  *)application\
+\{\
+    \cf2 // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later. \cf0 \
+    \cf2 // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.\cf0 \
+\}\
+\
+- (\cf5 void\cf0 )applicationWillEnterForeground:(\cf6 UIApplication\cf0  *)application\
+\{\
+    \cf2 // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.\cf0 \
+\}\
+\
+- (\cf5 void\cf0 )applicationDidBecomeActive:(\cf6 UIApplication\cf0  *)application\
+\{\
+    \cf2 // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.\cf0 \
+\}\
+\
+- (\cf5 void\cf0 )applicationWillTerminate:(\cf6 UIApplication\cf0  *)application\
+\{\
+    \cf2 // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.\cf0 \
+\}\
+\
+\cf5 @end\cf0 \
+\cf2 //\cf0 \
+\cf2 //  EADItem.h\cf0 \
+\cf2 //  RandomPossessions\cf0 \
+\cf2 //\cf0 \
+\cf2 //  Created by Ryan on 6/13/14.\cf0 \
+\cf2 //  Copyright (c) Docs Playground Inc. All rights reserved.\cf0 \
+\cf2 //\cf0 \
+\
+\
+\cf3 #import \cf4 <Foundation/Foundation.h>\cf3 \
+\cf0 \
+\cf5 @interface\cf0  EADItem : \cf6 NSObject\cf0 \
+\
++ (\cf5 instancetype\cf0 )randomItem;\
+\
+- (\cf5 instancetype\cf0 )initWithItemName:(\cf6 NSString\cf0  *)name valueInDollars:(\cf5 int\cf0 )value serialNumber:(\cf6 NSString\cf0  *)sNumber;\
+ \
+\cf5 @property\cf0  (\cf5 nonatomic\cf0 , \cf5 copy\cf0 ) \cf6 NSString\cf0  *itemName;\
+\cf5 @property\cf0  (\cf5 nonatomic\cf0 , \cf5 copy\cf0 ) \cf6 NSString\cf0  *serialNumber;\
+\cf5 @property\cf0  (\cf5 nonatomic\cf0 ) \cf5 int\cf0  valueInDollars;\
+\cf5 @property\cf0  (\cf5 nonatomic\cf0 , \cf5 readonly\cf0 , \cf5 strong\cf0 ) \cf6 NSDate\cf0  *dateCreated;\
+- (\cf5 instancetype\cf0 )initWithItemName:(\cf6 NSString\cf0  *)name;\
+\
+\cf5 @end\cf0 \
+\cf2 //\cf0 \
+\cf2 //  EADItem.m\cf0 \
+\cf2 //  RandomPossessions\cf0 \
+\cf2 //\cf0 \
+\cf2 //  Created by Ryan on 6/13/14.\cf0 \
+\cf2 //  Copyright (c) Docs Playground Inc. All rights reserved.\cf0 \
+\cf2 //\cf0 \
+\
+\
+\cf3 #import \cf4 "EADItem.h"\cf3 \
+\cf0 \
+\cf5 @interface\cf0  \cf7 EADItem\cf0  ()\
+\
+\cf5 @property\cf0  (\cf5 nonatomic\cf0 , \cf5 strong\cf0 ) \cf6 NSDate\cf0  *dateCreated;\
+\
+\cf5 @end\cf0 \
+\
+\cf5 @implementation\cf0  EADItem\
+\
++ (\cf5 instancetype\cf0 )randomItem\
+\{\
+    \cf2 // Create an array of three adjectives\cf0 \
+    \cf6 NSArray\cf0  *randomAdjectiveList = \cf9 @[\cf4 @"Fluffy"\cf0 , \cf4 @"Rusty"\cf0 , \cf4 @"Shiny"\cf9 ]\cf0 ;\
+    \cf2 // Create an array of three nouns\cf0 \
+    \cf6 NSArray\cf0  *randomNounList = \cf9 @[\cf4 @"Bear"\cf0 , \cf4 @"Spork"\cf0 , \cf4 @"Mac"\cf9 ]\cf0 ;\
+    \cf2 // Get the index of a random adjective/noun from the lists\cf0 \
+    \cf2 // Note: The % operator, called the modulo operator, gives\cf0 \
+    \cf2 // you the remainder. So adjectiveIndex is a random number\cf0 \
+    \cf2 // from 0 to 2 inclusive.\cf0 \
+    \cf6 NSInteger\cf0  adjectiveIndex = \cf8 rand\cf0 () % [randomAdjectiveList \cf8 count\cf0 ];\
+    \cf6 NSInteger\cf0  nounIndex = \cf8 rand\cf0 () % [randomNounList \cf8 count\cf0 ];\
+    \cf2 // Note that NSInteger is not an object, but a type definition\cf0 \
+    \cf2 // for "unsigned long"\cf0 \
+    \cf6 NSString\cf0  *randomName = [\cf6 NSString\cf0  \cf8 stringWithFormat\cf0 :\cf4 @"%@ %@"\cf0 ,\
+                            randomAdjectiveList[adjectiveIndex],\
+                            randomNounList[nounIndex]];\
+    \cf2 // a random integer for value\cf0 \
+    \cf5 int\cf0  randomValue = \cf8 rand\cf0 () % \cf9 100\cf0 ;\
+    \
+    \cf6 NSString\cf0  *randomSerialNumber = [\cf6 NSString\cf0  \cf8 stringWithFormat\cf0 :\cf4 @"%c%c%c%c%c"\cf0 ,\
+                                    \cf9 '0'\cf0  + \cf8 rand\cf0 () % \cf9 10\cf0 ,\
+                                    \cf9 'A'\cf0  + \cf8 rand\cf0 () % \cf9 26\cf0 ,\
+                                    \cf9 '0'\cf0  + \cf8 rand\cf0 () % \cf9 10\cf0 ,\
+                                    \cf9 'A'\cf0  + \cf8 rand\cf0 () % \cf9 26\cf0 ,\
+                                    \cf9 '0'\cf0  + \cf8 rand\cf0 () % \cf9 10\cf0 ];\
+    \cf2 // create new item with the random values\cf0 \
+    \cf7 EADItem\cf0  *newItem = [[\cf5 self\cf0  \cf8 alloc\cf0 ] \cf10 initWithItemName\cf0 :randomName\
+                                       \cf10 valueInDollars\cf0 :randomValue\
+                                         \cf10 serialNumber\cf0 :randomSerialNumber];\
+    \cf5 return\cf0  newItem;\
+\}\
+\
+- (\cf5 instancetype\cf0 )initWithItemName:(\cf6 NSString\cf0  *)name\
+                  valueInDollars:(\cf5 int\cf0 )value\
+                    serialNumber:(\cf6 NSString\cf0  *)sNumber\
+\{\
+    \cf2 // Call the superclass's designated initializer\cf0 \
+    \cf5 self\cf0  = [\cf5 super\cf0  \cf8 init\cf0 ];\
+    \cf2 // Did the superclass's designated initializer succeed?\cf0 \
+    \cf5 if\cf0  (\cf5 self\cf0 ) \{\
+        \cf2 // Give the instance variables initial values\cf0 \
+        \cf5 self\cf0 .\cf7 itemName\cf0  = name;\
+        \cf5 self\cf0 .\cf7 serialNumber\cf0  = sNumber;\
+        \cf5 self\cf0 .\cf7 valueInDollars\cf0  = value;\
+        \cf5 self\cf0 .\cf7 dateCreated\cf0  = [[\cf6 NSDate\cf0  \cf8 alloc\cf0 ] \cf8 init\cf0 ];\
+    \}\
+    \
+    \cf2 // Return the address of the newly initialized object\cf0 \
+    \cf5 return\cf0  \cf5 self\cf0 ;\
+\}\
+\
+- (\cf5 instancetype\cf0 )initWithItemName:(\cf6 NSString\cf0  *)name\
+\{\
+    \cf5 return\cf0  [\cf5 self\cf0  \cf10 initWithItemName\cf0 :name\
+                   \cf10 valueInDollars\cf0 :\cf9 0\cf0 \
+                     \cf10 serialNumber\cf0 :\cf4 @""\cf0 ];\
+\}\
+\
+\
+- (\cf5 instancetype\cf0 )init \{\
+    \cf5 return\cf0  [\cf5 self\cf0  \cf10 initWithItemName\cf0 :\cf4 @"Item"\cf0 \
+                   \cf10 valueInDollars\cf0 :\cf9 0\cf0 \
+                     \cf10 serialNumber\cf0 :\cf4 @""\cf0 ];\
+\}\
+\
+- (\cf6 NSString\cf0  *)description\
+\{\
+    \cf6 NSString\cf0  *descriptionString =\
+    [[\cf6 NSString\cf0  \cf8 alloc\cf0 ] \cf8 initWithFormat\cf0 :\cf4 @"%@ (%@): Worth $%d, recorded on %@"\cf0 ,\
+     \cf5 self\cf0 .\cf7 itemName\cf0 ,\
+     \cf5 self\cf0 .\cf7 serialNumber\cf0 ,\
+     \cf5 self\cf0 .\cf7 valueInDollars\cf0 ,\
+     \cf5 self\cf0 .\cf7 dateCreated\cf0 ];\
+    \
+    \cf5 return\cf0  descriptionString;\
+\}\
+\
+- (\cf5 void\cf0 )dealloc\
+\{\
+    \cf8 NSLog\cf0 (\cf4 @"Destroyed: %@"\cf0 , \cf5 self\cf0 );\
+\}\
+\
+\cf5 @end\cf0 \
+\
+\
+\cf2 //\cf0 \
+\cf2 //  EADItemStore.h\cf0 \
+\cf2 //  HomePwner\cf0 \
+\cf2 //\cf0 \
+\cf2 //  Created by Ryan on 6/13/14.\cf0 \
+\cf2 //  Copyright (c) Docs Playground Inc. All rights reserved.\cf0 \
+\cf2 //\cf0 \
+\
+\
+\cf3 #import \cf4 <Foundation/Foundation.h>\cf3 \
+\cf0 \
+\cf5 @class\cf0  \cf7 EADItem\cf0 ;\
+\
+\cf5 @interface\cf0  EADItemStore : \cf6 NSObject\cf0 \
+\
+\cf5 @property\cf0  (\cf5 nonatomic\cf0 , \cf5 readonly\cf0 ) \cf6 NSArray\cf0  *allItems;\
+\
+\cf2 // Notice that this is a class method and prefixed with a + instead of a -\cf0 \
++ (\cf5 instancetype\cf0 )sharedStore;\
+- (\cf7 EADItem\cf0  *)createItem;\
+\
+\cf5 @end\cf0 \
+\cf2 //\cf0 \
+\cf2 //  EADItemStore.m\cf0 \
+\cf2 //  HomePwner\cf0 \
+\cf2 //\cf0 \
+\cf2 //  Created by Ryan on 6/13/14.\cf0 \
+\cf2 //  Copyright (c) Docs Playground Inc. All rights reserved.\cf0 \
+\cf2 //\cf0 \
+\
+\cf3 #import \cf4 "EADItemStore.h"\cf3 \
+#import \cf4 "EADItem.h"\cf3 \
+\cf0 \
+\cf5 @interface\cf0  \cf7 EADItemStore\cf0  ()\
+\
+\cf5 @property\cf0  (\cf5 nonatomic\cf0 ) \cf6 NSMutableArray\cf0  *privateItems;\
+\
+\cf5 @end\cf0 \
+\
+\cf5 @implementation\cf0  EADItemStore\
+\
++ (\cf5 instancetype\cf0 )sharedStore\
+\{\
+    \cf5 static\cf0  \cf7 EADItemStore\cf0  *sharedStore;\
+\
+    \cf2 // Do I need to create a sharedStore?\cf0 \
+    \cf5 if\cf0  (!sharedStore) \{\
+        sharedStore = [[\cf5 self\cf0  \cf8 alloc\cf0 ] \cf10 initPrivate\cf0 ];\
+    \}\
+\
+    \cf5 return\cf0  sharedStore;\
+\}\
+\
+\cf2 // If a programmer calls [[BNRItemStore alloc] init], let him\cf0 \
+\cf2 // know the error of his ways\cf0 \
+- (\cf5 instancetype\cf0 )init\
+\{\
+    \cf5 @throw\cf0  [\cf6 NSException\cf0  \cf8 exceptionWithName\cf0 :\cf4 @"Singleton"\cf0 \
+                                   \cf8 reason\cf0 :\cf4 @"Use +[EADItemStore sharedStore]"\cf0 \
+                                 \cf8 userInfo\cf0 :\cf5 nil\cf0 ];\
+    \cf5 return\cf0  \cf5 nil\cf0 ;\
+\}\
+\
+\cf2 // Here is the real (secret) initializer\cf0 \
+- (\cf5 instancetype\cf0 )initPrivate\
+\{\
+    \cf5 self\cf0  = [\cf5 super\cf0  \cf8 init\cf0 ];\
+    \cf5 if\cf0  (\cf5 self\cf0 ) \{\
+        \cf7 _privateItems\cf0  = [[\cf6 NSMutableArray\cf0  \cf8 alloc\cf0 ] \cf8 init\cf0 ];\
+    \}\
+    \cf5 return\cf0  \cf5 self\cf0 ;\
+\}\
+\
+- (\cf6 NSArray\cf0  *)allItems\
+\{\
+    \cf5 return\cf0  [\cf5 self\cf0 .\cf7 privateItems\cf0  \cf8 copy\cf0 ];\
+\}\
+\
+- (\cf7 EADItem\cf0  *)createItem\
+\{\
+    \cf7 EADItem\cf0  *item = [\cf7 EADItem\cf0  \cf10 randomItem\cf0 ];\
+\
+    [\cf5 self\cf0 .\cf7 privateItems\cf0  \cf8 addObject\cf0 :item];\
+\
+    \cf5 return\cf0  item;\
+\}\
+\
+\cf5 @end\cf0 \
+\cf2 //\cf0 \
+\cf2 //  EADItemsViewController.h\cf0 \
+\cf2 //  HomePwner\cf0 \
+\cf2 //\cf0 \
+\cf2 //  Created by Ryan on 6/13/14.\cf0 \
+\cf2 //  Copyright (c) Docs Playground Inc. All rights reserved.\cf0 \
+\cf2 //\cf0 \
+\
+\cf3 #import \cf4 <UIKit/UIKit.h>\cf3 \
+\cf0 \
+\cf5 @interface\cf0  EADItemsViewController : \cf6 UITableViewController\cf0 \
+\
+\cf5 @end\cf0 \
+\cf2 //\cf0 \
+\cf2 //  EADItemsViewController.m\cf0 \
+\cf2 //  HomePwner\cf0 \
+\cf2 //\cf0 \
+\cf2 // Created by Ryan on 6/13/14.\cf0 \
+\cf2 //  Copyright (c) Docs Playground Inc. All rights reserved.\cf0 \
+\cf2 //\cf0 \
+\cf3 #import \cf4 "EADItemsViewController.h"\cf3 \
+#import \cf4 "EADItemStore.h"\cf3 \
+#import \cf4 "EADItem.h"\cf3 \
+\cf0 \
+\cf5 @implementation\cf0  EADItemsViewController\
+\
+- (\cf5 instancetype\cf0 )init\
+\{\
+    \cf2 // Call the superclass's designated initializer\cf0 \
+    \cf5 self\cf0  = [\cf5 super\cf0  \cf8 initWithStyle\cf0 :\cf8 UITableViewStylePlain\cf0 ];\
+    \cf5 if\cf0  (\cf5 self\cf0 ) \{\
+        \cf5 for\cf0  (\cf5 int\cf0  i = \cf9 0\cf0 ; i < \cf9 5\cf0 ; i++) \{\
+            [[\cf7 EADItemStore\cf0  \cf10 sharedStore\cf0 ] \cf10 createItem\cf0 ];\
+        \}\
+    \}\
+    \cf8 NSLog\cf0 (\cf4 @"sizeof(NSInteger) = %@"\cf0 , \cf9 @(\cf5 sizeof\cf0 (\cf6 NSInteger\cf0 )\cf9 )\cf0 );\
+    \cf5 return\cf0  \cf5 self\cf0 ;\
+\}\
+\
+- (\cf5 instancetype\cf0 )initWithStyle:(\cf6 UITableViewStyle\cf0 )style\
+\{\
+    \cf5 return\cf0  [\cf5 self\cf0  \cf8 init\cf0 ];\
+\}\
+\
+- (\cf5 void\cf0 )viewDidLoad\
+\{\
+    [\cf5 super\cf0  \cf8 viewDidLoad\cf0 ];\
+\
+    [\cf5 self\cf0 .\cf6 tableView\cf0  \cf8 registerClass\cf0 :[\cf6 UITableViewCell\cf0  \cf8 class\cf0 ]\
+           \cf8 forCellReuseIdentifier\cf0 :\cf4 @"UITableViewCell"\cf0 ];\
+    \
+    \
+    \
+    \cf5 self\cf0 .\cf6 tableView\cf0 .\cf6 sectionFooterHeight\cf0  = \cf9 44\cf0 ;\
+    \cf5 self\cf0 .\cf6 tableView\cf0 .\cf6 sectionHeaderHeight\cf0  = \cf9 60\cf0 ;\
+    \cf5 self\cf0 .\cf6 clearsSelectionOnViewWillAppear\cf0  = \cf5 NO\cf0 ;\
+    \cf5 self\cf0 .\cf6 navigationItem\cf0 .\cf6 rightBarButtonItem\cf0  = \cf5 self\cf0 .\cf8 editButtonItem\cf0 ;\
+    \
+    \
+    [\cf5 self\cf0 .\cf6 tableView\cf0  \cf8 registerClass\cf0 :[\cf6 UITableViewHeaderFooterView\cf0  \cf8 class\cf0 ] \cf8 forHeaderFooterViewReuseIdentifier\cf0 :\cf4 @"UITableViewHeaderFooterView"\cf0 ];\
+    \
+    \
+\}\
+- (\cf6 NSInteger\cf0 )numberOfSectionsInTableView:(\cf6 UITableView\cf0  *)tableView \{\
+    \cf2 // Return the number of sections.\cf0 \
+    \cf5 return\cf0  \cf9 2\cf0 ;\
+\}\
+\
+- (\cf6 NSInteger\cf0 )tableView:(\cf6 UITableView\cf0  *)tableView numberOfRowsInSection:(\cf6 NSInteger\cf0 )section \{\
+    \
+    \
+    \cf6 NSArray\cf0  *items = [[\cf7 EADItemStore\cf0  \cf10 sharedStore\cf0 ] \cf10 allItems\cf0 ];\
+    \cf5 int\cf0  sum = \cf9 0\cf0 ;\
+    \cf5 if\cf0  (section == \cf9 0\cf0 ) \{\
+        \cf5 for\cf0  (\cf7 EADItem\cf0  *i \cf5 in\cf0  items) \{\
+            \cf5 if\cf0  (i.\cf7 valueInDollars\cf0  > \cf9 50.0\cf0 ) \{\
+                sum++;\
+            \}\
+        \}\
+    \}\
+    \
+    \cf5 if\cf0  (section == \cf9 1\cf0 ) \{\
+        \cf5 for\cf0  (\cf7 EADItem\cf0  *i \cf5 in\cf0  items) \{\
+            \cf5 if\cf0  (i.\cf7 valueInDollars\cf0  < \cf9 50.0\cf0 ) \{\
+                sum++;\
+            \}\
+        \}\
+    \}\
+    \
+    \cf5 return\cf0  sum;\
+\}\
+\
+- (\cf6 UITableViewCell\cf0  *)tableView:(\cf6 UITableView\cf0  *)tableView cellForRowAtIndexPath:(\cf6 NSIndexPath\cf0  *)indexPath \{\
+    \
+    \
+    \cf6 UITableViewCell\cf0  *cell = [tableView \cf8 dequeueReusableCellWithIdentifier\cf0 :\cf4 @"UITableViewCell"\cf0  \cf8 forIndexPath\cf0 :indexPath];\
+    \
+    \cf6 NSArray\cf0  *items = [[\cf7 EADItemStore\cf0  \cf10 sharedStore\cf0 ] \cf10 allItems\cf0 ];\
+    \
+\
+    \cf6 NSMutableArray\cf0  *section0 = [[\cf6 NSMutableArray\cf0  \cf8 alloc\cf0 ] \cf8 init\cf0 ];\
+    \cf6 NSMutableArray\cf0  *section1 = [[\cf6 NSMutableArray\cf0  \cf8 alloc\cf0 ] \cf8 init\cf0 ];\
+    \
+    \cf5 for\cf0  (\cf7 EADItem\cf0  *i \cf5 in\cf0  items) \{\
+        \cf5 if\cf0  (i.\cf7 valueInDollars\cf0  > \cf9 50.0\cf0 ) \{\
+            [section0 \cf8 addObject\cf0 :i];\
+        \} \cf5 else\cf0  \{\
+            [section1 \cf8 addObject\cf0 :i];\
+        \}\
+    \}\
+    \
+    \cf5 if\cf0  (indexPath.\cf6 section\cf0  == \cf9 0\cf0 ) \{\
+        \cf7 EADItem\cf0  *item = section0[indexPath.\cf6 row\cf0 ];\
+        cell.\cf6 textLabel\cf0 .\cf6 text\cf0  = [item \cf8 description\cf0 ];\
+        \
+    \} \cf5 else\cf0  \cf5 if\cf0  (indexPath.\cf6 section\cf0  == \cf9 1\cf0 ) \{\
+        \cf7 EADItem\cf0  *item = section1[indexPath.\cf6 row\cf0 ];\
+        cell.\cf6 textLabel\cf0 .\cf6 text\cf0  = [item \cf8 description\cf0 ];\
+    \}\
+    \
+    \cf5 return\cf0  cell;\
+    \
+\}\
+- (\cf6 UIView\cf0  *)tableView:(\cf6 UITableView\cf0  *)tableView viewForFooterInSection:(\cf6 NSInteger\cf0 )section \{\
+    \
+    \cf6 UITableViewHeaderFooterView\cf0  *footer = [tableView \cf8 dequeueReusableHeaderFooterViewWithIdentifier\cf0 :\cf4 @"UITableViewHeaderFooterView"\cf0 ];\
+    footer.\cf6 textLabel\cf0 .\cf6 text\cf0  = \cf4 @"No more items!"\cf0 ;\
+    \
+    \cf5 return\cf0  footer;\
+\}\
+\
+- (\cf6 UIView\cf0  *)tableView:(\cf6 UITableView\cf0  *)tableView viewForHeaderInSection:(\cf6 NSInteger\cf0 )section \{\
+    \
+    \cf6 UITableViewHeaderFooterView\cf0  *header = [tableView \cf8 dequeueReusableHeaderFooterViewWithIdentifier\cf0 :\cf4 @"UITableViewHeaderFooterView"\cf0 ];\
+    \
+    header.\cf6 contentView\cf0 .\cf6 backgroundColor\cf0  = [\cf6 UIColor\cf0  \cf8 redColor\cf0 ];\
+    \
+    \cf5 if\cf0  (section == \cf9 0\cf0 ) \{\
+        \
+        header.\cf6 textLabel\cf0 .\cf6 text\cf0  = \cf4 @"Items greater than $50"\cf0 ;\
+        \
+    \}\
+    \cf5 if\cf0  (section == \cf9 1\cf0 ) \{\
+        header.\cf6 textLabel\cf0 .\cf6 text\cf0  = \cf4 @"Items less than $50"\cf0 ;\
+    \}\
+    \
+    \cf5 return\cf0  header;\
+\}\
+\
+\cf5 @end\cf0 \
+\cf2 //\cf0 \
+\cf2 //  main.m\cf0 \
+\cf2 //  HomePwner\cf0 \
+\cf2 //\cf0 \
+\
+\
+\cf3 #import \cf4 <UIKit/UIKit.h>\cf3 \
+\cf0 \
+\cf3 #import \cf4 "EADAppDelegate.h"\cf3 \
+\cf0 \
+\cf5 int\cf0  main(\cf5 int\cf0  argc, \cf5 char\cf0  * argv[])\
+\{\
+    \cf5 @autoreleasepool\cf0  \{\
+        \cf5 return\cf0  \cf8 UIApplicationMain\cf0 (argc, argv, \cf5 nil\cf0 , \cf8 NSStringFromClass\cf0 ([\cf7 EADAppDelegate\cf0  \cf8 class\cf0 ]));\
+    \}\
+\}\
+}
