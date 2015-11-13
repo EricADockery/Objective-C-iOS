@@ -7,7 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
+@class WebViewViewController;
 
 @interface TableViewController : UITableViewController
-@property (strong, nonatomic) NSArray * RequestData;
+@property (strong, nonatomic) NSMutableArray * RequestData;
+@property (strong,nonatomic) NSURL *urlSent;
+@property (nonatomic) WebViewViewController *webViewController;
+
 @end

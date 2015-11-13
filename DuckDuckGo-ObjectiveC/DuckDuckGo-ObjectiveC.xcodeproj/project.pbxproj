@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		53AA1F6A1BF4D3BA007CABE5 /* TableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 53AA1F691BF4D3BA007CABE5 /* TableViewController.m */; };
+		53AA1F701BF6557A007CABE5 /* WebViewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 53AA1F6F1BF6557A007CABE5 /* WebViewViewController.m */; };
 		53C85A3F1BF411D60049DAE6 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 53C85A3E1BF411D60049DAE6 /* main.m */; };
 		53C85A421BF411D60049DAE6 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 53C85A411BF411D60049DAE6 /* AppDelegate.m */; };
 		53C85A451BF411D60049DAE6 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 53C85A441BF411D60049DAE6 /* ViewController.m */; };
@@ -38,6 +39,8 @@
 /* Begin PBXFileReference section */
 		53AA1F681BF4D3BA007CABE5 /* TableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TableViewController.h; path = ../TableViewController.h; sourceTree = "<group>"; };
 		53AA1F691BF4D3BA007CABE5 /* TableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TableViewController.m; path = ../TableViewController.m; sourceTree = "<group>"; };
+		53AA1F6E1BF6557A007CABE5 /* WebViewViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WebViewViewController.h; path = ../WebViewViewController.h; sourceTree = "<group>"; };
+		53AA1F6F1BF6557A007CABE5 /* WebViewViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WebViewViewController.m; path = ../WebViewViewController.m; sourceTree = "<group>"; };
 		53C85A3A1BF411D60049DAE6 /* DuckDuckGo-ObjectiveC.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "DuckDuckGo-ObjectiveC.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		53C85A3E1BF411D60049DAE6 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		53C85A401BF411D60049DAE6 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -110,6 +113,8 @@
 				53C85A441BF411D60049DAE6 /* ViewController.m */,
 				53AA1F681BF4D3BA007CABE5 /* TableViewController.h */,
 				53AA1F691BF4D3BA007CABE5 /* TableViewController.m */,
+				53AA1F6E1BF6557A007CABE5 /* WebViewViewController.h */,
+				53AA1F6F1BF6557A007CABE5 /* WebViewViewController.m */,
 				53C85A461BF411D60049DAE6 /* Main.storyboard */,
 				53C85A491BF411D60049DAE6 /* Assets.xcassets */,
 				53C85A4B1BF411D60049DAE6 /* LaunchScreen.storyboard */,
@@ -277,6 +282,7 @@
 			files = (
 				53C85A451BF411D60049DAE6 /* ViewController.m in Sources */,
 				53C85A421BF411D60049DAE6 /* AppDelegate.m in Sources */,
+				53AA1F701BF6557A007CABE5 /* WebViewViewController.m in Sources */,
 				53C85A3F1BF411D60049DAE6 /* main.m in Sources */,
 				53AA1F6A1BF4D3BA007CABE5 /* TableViewController.m in Sources */,
 			);
