@@ -33,17 +33,21 @@
 //Get the search information:
 -(IBAction)search
 {
+    //currently takes only one string without a space at the end. Will need to format to fix.
     NSString *searchString=self.searchField.text;
     //api address for url is api.duckduckgo.com/?q=    &format=json
     NSString *urlAddress = [NSString stringWithFormat:@"https://api.duckduckgo.com/?q=%@&format=json",searchString];
     NSURL *URL = [NSURL URLWithString:urlAddress];
+  //  NSData *data = [NSData dataWithContentsOfURL: URL];
     NSURLRequest *request = [NSURLRequest requestWithURL:URL];
     NSURLSession *session = [NSURLSession sharedSession];
     NSURLSessionDataTask   *task = [session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error){
-      //  NSDictionary *jsonObject = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
+      NSDictionary *jsonObject = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
        
-        //NSArray *searchResultData = jsonObject[@"Result"];
-        //NSLog(@"The search Results %@", searchResultData);
+        _searchRelatedTopics = jsonObject[@"RelatedTopics"];
+       // NSLog(@"The Data %@",searchRelatedTopics);
+       // NSLog(@"A single part of the Array %@", searchRelatedTopics[0]);
+        
     }];
     [task resume];
     
@@ -52,9 +56,18 @@
 }
 //preform segway to TableView
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
-    NSArray *searchResults = @[@"This", @"would", @"be", @"data", @"if", @"I", @"Could", @"Parse",@"Json", @"data", @"from", @"DuckDuckGo"];
+    //NSArray *searchResults = @[@"This", @"would", @"be", @"data", @"if", @"I", @"Could", @"Parse",@"Json", @"data", @"from", @"DuckDuckGo"];
     TableViewController *tableView = (TableViewController *)segue.destinationViewController;
-    tableView.RequestData = searchResults;
+    for (int i = 0; i < [_searchRelatedTopics count]; i++)
+    {
+        if(_searchRelatedTopics[i][@"Result"] ){
+            [_theResults addObject:_searchRelatedTopics[i][@"Result"]];
+            NSLog(@"Related Topics @%@", _searchRelatedTopics[i][@"Result"]);
+        }
+    }
+
+    NSLog(@"%@", _theResults);
+    tableView.RequestData = _theResults;
 }
 
 

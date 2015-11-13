@@ -10,8 +10,8 @@
 
 @interface ViewController : UIViewController
 @property (weak, nonatomic) IBOutlet UITextField *searchField;
-
 @property (weak, nonatomic) IBOutlet UIImageView *searchImage;
-
+@property (strong, nonatomic) NSMutableArray *theResults;
+@property(strong,nonatomic) NSArray *searchRelatedTopics;
 @end
 

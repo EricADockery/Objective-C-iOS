@@ -43,6 +43,9 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"UITableViewCell"];
+    NSLog(@"Testing the Request Data");
+    NSLog(@"%@", _RequestData);
+    NSLog(@"%@", _RequestData[indexPath.row]);
     cell.textLabel.text = [_RequestData[indexPath.row] description];
     return cell;
 }
