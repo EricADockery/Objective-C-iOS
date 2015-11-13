@@ -1,0 +1,493 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		943AD1331B331BEA00884A85 /* Deminsions.m in Sources */ = {isa = PBXBuildFile; fileRef = 943AD1321B331BEA00884A85 /* Deminsions.m */; };
+		943AD1361B331C4300884A85 /* UpperAnteriors.m in Sources */ = {isa = PBXBuildFile; fileRef = 943AD1351B331C4300884A85 /* UpperAnteriors.m */; };
+		943AD1391B331C6200884A85 /* LowerAnteriors.m in Sources */ = {isa = PBXBuildFile; fileRef = 943AD1381B331C6200884A85 /* LowerAnteriors.m */; };
+		943AD13C1B331C7A00884A85 /* DegreePosteriors.m in Sources */ = {isa = PBXBuildFile; fileRef = 943AD13B1B331C7A00884A85 /* DegreePosteriors.m */; };
+		943AD13F1B331C9D00884A85 /* RecomendedPosteriors.m in Sources */ = {isa = PBXBuildFile; fileRef = 943AD13E1B331C9D00884A85 /* RecomendedPosteriors.m */; };
+		943AD1421B331CC400884A85 /* Review.m in Sources */ = {isa = PBXBuildFile; fileRef = 943AD1411B331CC400884A85 /* Review.m */; };
+		943AD14A1B33451600884A85 /* StartViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 943AD1491B33451600884A85 /* StartViewController.m */; };
+		943AD14F1B38A2D400884A85 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 943AD14D1B38A2D400884A85 /* Main.storyboard */; };
+		9466667A1B0F956100C0705B /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 946666791B0F956100C0705B /* main.m */; };
+		9466667D1B0F956100C0705B /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 9466667C1B0F956100C0705B /* AppDelegate.m */; };
+		946666831B0F956100C0705B /* FaceShape.m in Sources */ = {isa = PBXBuildFile; fileRef = 946666821B0F956100C0705B /* FaceShape.m */; };
+		946666861B0F956100C0705B /* ModelController.m in Sources */ = {isa = PBXBuildFile; fileRef = 946666851B0F956100C0705B /* ModelController.m */; };
+		9466668B1B0F956100C0705B /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9466668A1B0F956100C0705B /* Images.xcassets */; };
+		9466668E1B0F956100C0705B /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9466668C1B0F956100C0705B /* LaunchScreen.xib */; };
+		9466669A1B0F956100C0705B /* The_Denture_Selector_Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 946666991B0F956100C0705B /* The_Denture_Selector_Tests.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		946666941B0F956100C0705B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 9466666C1B0F956100C0705B /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 946666731B0F956100C0705B;
+			remoteInfo = "The Denture Selector!";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		943AD1311B331BEA00884A85 /* Deminsions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Deminsions.h; sourceTree = "<group>"; };
+		943AD1321B331BEA00884A85 /* Deminsions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Deminsions.m; sourceTree = "<group>"; };
+		943AD1341B331C4300884A85 /* UpperAnteriors.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UpperAnteriors.h; sourceTree = "<group>"; };
+		943AD1351B331C4300884A85 /* UpperAnteriors.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UpperAnteriors.m; sourceTree = "<group>"; };
+		943AD1371B331C6200884A85 /* LowerAnteriors.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LowerAnteriors.h; sourceTree = "<group>"; };
+		943AD1381B331C6200884A85 /* LowerAnteriors.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LowerAnteriors.m; sourceTree = "<group>"; };
+		943AD13A1B331C7A00884A85 /* DegreePosteriors.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DegreePosteriors.h; sourceTree = "<group>"; };
+		943AD13B1B331C7A00884A85 /* DegreePosteriors.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DegreePosteriors.m; sourceTree = "<group>"; };
+		943AD13D1B331C9D00884A85 /* RecomendedPosteriors.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecomendedPosteriors.h; sourceTree = "<group>"; };
+		943AD13E1B331C9D00884A85 /* RecomendedPosteriors.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RecomendedPosteriors.m; sourceTree = "<group>"; };
+		943AD1401B331CC400884A85 /* Review.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Review.h; sourceTree = "<group>"; };
+		943AD1411B331CC400884A85 /* Review.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Review.m; sourceTree = "<group>"; };
+		943AD1481B33451600884A85 /* StartViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StartViewController.h; sourceTree = "<group>"; };
+		943AD1491B33451600884A85 /* StartViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StartViewController.m; sourceTree = "<group>"; };
+		943AD14E1B38A2D400884A85 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = "The Denture Selector!/Base.lproj/Main.storyboard"; sourceTree = "<group>"; };
+		946666741B0F956100C0705B /* The Denture Selector!.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "The Denture Selector!.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		946666781B0F956100C0705B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		946666791B0F956100C0705B /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		9466667B1B0F956100C0705B /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		9466667C1B0F956100C0705B /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		946666811B0F956100C0705B /* FaceShape.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FaceShape.h; sourceTree = "<group>"; };
+		946666821B0F956100C0705B /* FaceShape.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FaceShape.m; sourceTree = "<group>"; };
+		946666841B0F956100C0705B /* ModelController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ModelController.h; sourceTree = "<group>"; };
+		946666851B0F956100C0705B /* ModelController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ModelController.m; sourceTree = "<group>"; };
+		9466668A1B0F956100C0705B /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		9466668D1B0F956100C0705B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
+		946666931B0F956100C0705B /* The Denture Selector!Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "The Denture Selector!Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		946666981B0F956100C0705B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		946666991B0F956100C0705B /* The_Denture_Selector_Tests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = The_Denture_Selector_Tests.m; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		946666711B0F956100C0705B /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		946666901B0F956100C0705B /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		9466666B1B0F956100C0705B = {
+			isa = PBXGroup;
+			children = (
+				946666761B0F956100C0705B /* The Denture Selector! */,
+				946666961B0F956100C0705B /* The Denture Selector!Tests */,
+				946666751B0F956100C0705B /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		946666751B0F956100C0705B /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				946666741B0F956100C0705B /* The Denture Selector!.app */,
+				946666931B0F956100C0705B /* The Denture Selector!Tests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		946666761B0F956100C0705B /* The Denture Selector! */ = {
+			isa = PBXGroup;
+			children = (
+				9466667B1B0F956100C0705B /* AppDelegate.h */,
+				9466667C1B0F956100C0705B /* AppDelegate.m */,
+				943AD1481B33451600884A85 /* StartViewController.h */,
+				943AD1491B33451600884A85 /* StartViewController.m */,
+				946666811B0F956100C0705B /* FaceShape.h */,
+				946666821B0F956100C0705B /* FaceShape.m */,
+				943AD1311B331BEA00884A85 /* Deminsions.h */,
+				943AD1321B331BEA00884A85 /* Deminsions.m */,
+				943AD1341B331C4300884A85 /* UpperAnteriors.h */,
+				943AD1351B331C4300884A85 /* UpperAnteriors.m */,
+				943AD1371B331C6200884A85 /* LowerAnteriors.h */,
+				943AD1381B331C6200884A85 /* LowerAnteriors.m */,
+				943AD13A1B331C7A00884A85 /* DegreePosteriors.h */,
+				943AD13B1B331C7A00884A85 /* DegreePosteriors.m */,
+				943AD13D1B331C9D00884A85 /* RecomendedPosteriors.h */,
+				943AD13E1B331C9D00884A85 /* RecomendedPosteriors.m */,
+				943AD1401B331CC400884A85 /* Review.h */,
+				943AD1411B331CC400884A85 /* Review.m */,
+				946666841B0F956100C0705B /* ModelController.h */,
+				946666851B0F956100C0705B /* ModelController.m */,
+				943AD14D1B38A2D400884A85 /* Main.storyboard */,
+				9466668A1B0F956100C0705B /* Images.xcassets */,
+				9466668C1B0F956100C0705B /* LaunchScreen.xib */,
+				946666771B0F956100C0705B /* Supporting Files */,
+			);
+			path = "The Denture Selector!";
+			sourceTree = "<group>";
+		};
+		946666771B0F956100C0705B /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				946666781B0F956100C0705B /* Info.plist */,
+				946666791B0F956100C0705B /* main.m */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		946666961B0F956100C0705B /* The Denture Selector!Tests */ = {
+			isa = PBXGroup;
+			children = (
+				946666991B0F956100C0705B /* The_Denture_Selector_Tests.m */,
+				946666971B0F956100C0705B /* Supporting Files */,
+			);
+			path = "The Denture Selector!Tests";
+			sourceTree = "<group>";
+		};
+		946666971B0F956100C0705B /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				946666981B0F956100C0705B /* Info.plist */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		946666731B0F956100C0705B /* The Denture Selector! */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 9466669D1B0F956100C0705B /* Build configuration list for PBXNativeTarget "The Denture Selector!" */;
+			buildPhases = (
+				946666701B0F956100C0705B /* Sources */,
+				946666711B0F956100C0705B /* Frameworks */,
+				946666721B0F956100C0705B /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "The Denture Selector!";
+			productName = "The Denture Selector!";
+			productReference = 946666741B0F956100C0705B /* The Denture Selector!.app */;
+			productType = "com.apple.product-type.application";
+		};
+		946666921B0F956100C0705B /* The Denture Selector!Tests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 946666A01B0F956100C0705B /* Build configuration list for PBXNativeTarget "The Denture Selector!Tests" */;
+			buildPhases = (
+				9466668F1B0F956100C0705B /* Sources */,
+				946666901B0F956100C0705B /* Frameworks */,
+				946666911B0F956100C0705B /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				946666951B0F956100C0705B /* PBXTargetDependency */,
+			);
+			name = "The Denture Selector!Tests";
+			productName = "The Denture Selector!Tests";
+			productReference = 946666931B0F956100C0705B /* The Denture Selector!Tests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		9466666C1B0F956100C0705B /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0630;
+				ORGANIZATIONNAME = "Docs Playground";
+				TargetAttributes = {
+					946666731B0F956100C0705B = {
+						CreatedOnToolsVersion = 6.3.1;
+						DevelopmentTeam = JN6SRFFEJW;
+					};
+					946666921B0F956100C0705B = {
+						CreatedOnToolsVersion = 6.3.1;
+						TestTargetID = 946666731B0F956100C0705B;
+					};
+				};
+			};
+			buildConfigurationList = 9466666F1B0F956100C0705B /* Build configuration list for PBXProject "The Denture Selector!" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 9466666B1B0F956100C0705B;
+			productRefGroup = 946666751B0F956100C0705B /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				946666731B0F956100C0705B /* The Denture Selector! */,
+				946666921B0F956100C0705B /* The Denture Selector!Tests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		946666721B0F956100C0705B /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				943AD14F1B38A2D400884A85 /* Main.storyboard in Resources */,
+				9466668E1B0F956100C0705B /* LaunchScreen.xib in Resources */,
+				9466668B1B0F956100C0705B /* Images.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		946666911B0F956100C0705B /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		946666701B0F956100C0705B /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				943AD1361B331C4300884A85 /* UpperAnteriors.m in Sources */,
+				943AD1421B331CC400884A85 /* Review.m in Sources */,
+				943AD13F1B331C9D00884A85 /* RecomendedPosteriors.m in Sources */,
+				946666831B0F956100C0705B /* FaceShape.m in Sources */,
+				9466667D1B0F956100C0705B /* AppDelegate.m in Sources */,
+				943AD1391B331C6200884A85 /* LowerAnteriors.m in Sources */,
+				943AD1331B331BEA00884A85 /* Deminsions.m in Sources */,
+				943AD13C1B331C7A00884A85 /* DegreePosteriors.m in Sources */,
+				946666861B0F956100C0705B /* ModelController.m in Sources */,
+				943AD14A1B33451600884A85 /* StartViewController.m in Sources */,
+				9466667A1B0F956100C0705B /* main.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		9466668F1B0F956100C0705B /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9466669A1B0F956100C0705B /* The_Denture_Selector_Tests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		946666951B0F956100C0705B /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 946666731B0F956100C0705B /* The Denture Selector! */;
+			targetProxy = 946666941B0F956100C0705B /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		943AD14D1B38A2D400884A85 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				943AD14E1B38A2D400884A85 /* Base */,
+			);
+			name = Main.storyboard;
+			path = ..;
+			sourceTree = "<group>";
+		};
+		9466668C1B0F956100C0705B /* LaunchScreen.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				9466668D1B0F956100C0705B /* Base */,
+			);
+			name = LaunchScreen.xib;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		9466669B1B0F956100C0705B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		9466669C1B0F956100C0705B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		9466669E1B0F956100C0705B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				INFOPLIST_FILE = "The Denture Selector!/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "EAD.The-Dentrure-Selector";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		9466669F1B0F956100C0705B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				INFOPLIST_FILE = "The Denture Selector!/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "EAD.The-Dentrure-Selector";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
+		946666A11B0F956100C0705B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+				);
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = "The Denture Selector!Tests/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/The Denture Selector!.app/The Denture Selector!";
+			};
+			name = Debug;
+		};
+		946666A21B0F956100C0705B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = "The Denture Selector!Tests/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/The Denture Selector!.app/The Denture Selector!";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		9466666F1B0F956100C0705B /* Build configuration list for PBXProject "The Denture Selector!" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9466669B1B0F956100C0705B /* Debug */,
+				9466669C1B0F956100C0705B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		9466669D1B0F956100C0705B /* Build configuration list for PBXNativeTarget "The Denture Selector!" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9466669E1B0F956100C0705B /* Debug */,
+				9466669F1B0F956100C0705B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		946666A01B0F956100C0705B /* Build configuration list for PBXNativeTarget "The Denture Selector!Tests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				946666A11B0F956100C0705B /* Debug */,
+				946666A21B0F956100C0705B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 9466666C1B0F956100C0705B /* Project object */;
+}
