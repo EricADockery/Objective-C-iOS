@@ -2,7 +2,7 @@
 //  DegreePosteriors.m
 //  The Denture Selector!
 //
-//  Created by Ryan on 6/18/15.
+//  Created by Eric on 6/18/15.
 //  Copyright (c) 2015 Docs Playground. All rights reserved.
 //
 
@@ -38,6 +38,8 @@
 
 
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
+    
+    /// --------------Switch case in later development ----------
     if([_selectedDegree isEqualToString:@"Zero"]){
         if([_selectedLowerTeeth isEqualToString:@"2C-133.png"] || [_selectedLowerTeeth isEqualToString:@"2D-2D-Lower.png"] || [_selectedLowerTeeth isEqualToString:@"3N-2NA24.png"] || [_selectedLowerTeeth isEqualToString:@"3M-3M4M.png"]){
             //29M

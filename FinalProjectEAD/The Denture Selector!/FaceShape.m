@@ -2,7 +2,7 @@
 //  DataViewController.m
 //  The Denture Selector!
 //
-//  Created by Ryan on 5/22/15.
+//  Created by Eric on 5/22/15.
 //  Copyright (c) 2015 Docs Playground. All rights reserved.
 //
 
@@ -55,20 +55,6 @@
         else{
             deminsions.faceLabel = _squareTapperingLabel.text;
         }
-        
-    
-                //hide the button that was pressed back
-        
-         //---- Not sure if this is working or if it is keeping it completely hidden
-        // -- Going to try and view on my phone on if this is working correctly
-        /*
-         _ovoidCheck.hidden = YES;
-         _rectangularCheck.hidden = YES;
-         _squareCheck.hidden = YES;
-         _tapperingCheck.hidden = YES;
-         _squareTapperingCheck.hidden = YES;
-         
-*/
         
     }
 }

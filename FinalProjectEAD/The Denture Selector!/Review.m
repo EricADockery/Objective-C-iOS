@@ -2,7 +2,7 @@
 //  Review.m
 //  The Denture Selector!
 //
-//  Created by Ryan on 6/18/15.
+//  Created by Eric on 6/18/15.
 //  Copyright (c) 2015 Docs Playground. All rights reserved.
 //
 
@@ -46,7 +46,7 @@
     //server URL
     //create a request
     
-    NSString *content = [NSString stringWithFormat:@"http://45.55.58.84:4000/new/%@/%@/%@", _reviewArray[0] , _reviewArray[1] ,_reviewArray[2]];
+    NSString *content = [NSString stringWithFormat:@"http://45.55.58.84:4000/new/AA/%@/%@/%@", _reviewArray[0] , _reviewArray[1] ,_reviewArray[2]];
     
     NSURL *URL = [NSURL URLWithString:content];
     NSURLRequest *request = [NSURLRequest requestWithURL:URL];

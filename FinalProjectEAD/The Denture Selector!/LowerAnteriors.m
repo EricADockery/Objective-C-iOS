@@ -2,7 +2,7 @@
 //  LowerAnteriors.m
 //  The Denture Selector!
 //
-//  Created by Ryan on 6/18/15.
+//  Created by Eric on 6/18/15.
 //  Copyright (c) 2015 Docs Playground. All rights reserved.
 //
 
@@ -24,6 +24,9 @@
     _MandibularCheck.hidden = YES;
     _currentIndex = 0;
     //get the correct images from the selected upper
+    
+    
+    //--------This should become a switch case in later development --------
     NSLog(@"%@", _selectedUpper);
     if ([_selectedUpper  isEqual: @"133-2C.png"]){
         ImageArray = @[[UIImage imageNamed:@"2C-133.png"]];

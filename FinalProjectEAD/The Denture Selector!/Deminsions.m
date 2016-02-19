@@ -2,7 +2,7 @@
 //  Deminsions.m
 //  The Denture Selector!
 //
-//  Created by Ryan on 6/18/15.
+//  Created by Eric on 6/18/15.
 //  Copyright (c) 2015 Docs Playground. All rights reserved.
 //
 
@@ -123,6 +123,9 @@
     // calcuate the best value for the images
     NSInteger lengthofCentral = 0;
     NSInteger widthofCentral = 0;
+    //---This should be changed to a switch case in later development ----
+    
+    
     if ([self.verticalDeminsionOfOcclusion.text length] != 0){
         NSLog(@"the VDO value is @%@", self.verticalDeminsionOfOcclusion.text);
         NSLog(@"I am in the VDO if statement");
