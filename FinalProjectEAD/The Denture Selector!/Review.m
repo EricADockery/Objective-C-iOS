@@ -23,16 +23,16 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     NSLog(@"This is the testing of the review image\n");
-    NSLog(@"%@",_reviewArray[0]);
-    NSLog(@"%@",_reviewArray[1]);
-    NSLog(@"%@",_reviewArray[2]);
+    NSLog(@"%@",self.reviewArray[0]);
+    NSLog(@"%@",self.reviewArray[1]);
+    NSLog(@"%@",self.reviewArray[2]);
     
     //upper image from the selectedUpper in the lowerAnteriors view reviewArray [0]
-    _upperImage.image = [UIImage imageNamed:_reviewArray[0]];
+    self.upperImage.image = [UIImage imageNamed:self.reviewArray[0]];
     //lower Image from the selectedLowerTeeth in DegreePosteriors reviewArray [1]
-    _lowerImage.image = [UIImage imageNamed:_reviewArray[1]];
+    self.lowerImage.image = [UIImage imageNamed:self.reviewArray[1]];
     //review.selectedDegree
-    _posterierImage.image = [UIImage imageNamed:_reviewArray[2]];
+    self.posterierImage.image = [UIImage imageNamed:self.reviewArray[2]];
     
 }
 
@@ -46,7 +46,7 @@
     //server URL
     //create a request
     
-    NSString *content = [NSString stringWithFormat:@"http://45.55.58.84:4000/new/AA/%@/%@/%@", _reviewArray[0] , _reviewArray[1] ,_reviewArray[2]];
+    NSString *content = [NSString stringWithFormat:@"http://45.55.58.84:4000/new/AA/%@/%@/%@", self.reviewArray[0] , self.reviewArray[1] ,self.reviewArray[2]];
     
     NSURL *URL = [NSURL URLWithString:content];
     NSURLRequest *request = [NSURLRequest requestWithURL:URL];

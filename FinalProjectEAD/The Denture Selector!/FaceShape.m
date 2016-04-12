@@ -4,7 +4,7 @@
 //
 //  Created by Eric on 5/22/15.
 //  Copyright (c) 2015 Docs Playground. All rights reserved.
-//
+// set up the measurments for the teeth
 
 #import "FaceShape.h"
 #import "Deminsions.h"
@@ -16,12 +16,12 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view, typically from a nib.
-    _ovoidCheck.hidden = YES;
-    _rectangularCheck.hidden = YES;
-    _squareCheck.hidden = YES;
-    _tapperingCheck.hidden = YES;
-    _squareTapperingCheck.hidden = YES;
+    //hiding the check marks for the images.
+    self.ovoidCheck.hidden = YES;
+    self.rectangularCheck.hidden = YES;
+    self.squareCheck.hidden = YES;
+    self.tapperingCheck.hidden = YES;
+    self.squareTapperingCheck.hidden = YES;
     
     }
 
@@ -39,31 +39,33 @@
         Deminsions *deminsions = (Deminsions *)segue.destinationViewController;
         
         
-        //change label -- currently doesnt work
-        if(_ovoidCheck.hidden == NO) {
-            deminsions.faceLabel = _ovoidLabel.text;
+        //set up the values to change the lable on the next view
+        //This should be changed to a switch case for run time complexity...
+        if(self.ovoidCheck.hidden == NO) {
+            deminsions.faceLabel = self.ovoidLabel.text;
         }
-        else if(_rectangularCheck.hidden == NO){
-            deminsions.faceLabel = _rectangularLabel.text;
+        else if(self.rectangularCheck.hidden == NO){
+            deminsions.faceLabel = self.rectangularLabel.text;
         }
-        else if (_squareCheck.hidden == NO){
-            deminsions.faceLabel = _squareLabel.text;
+        else if (self.squareCheck.hidden == NO){
+            deminsions.faceLabel = self.squareLabel.text;
         }
-        else if (_tapperingCheck.hidden == NO){
-            deminsions.faceLabel = _tapperingLabel.text;
+        else if (self.tapperingCheck.hidden == NO){
+            deminsions.faceLabel = self.tapperingLabel.text;
         }
         else{
-            deminsions.faceLabel = _squareTapperingLabel.text;
+            deminsions.faceLabel = self.squareTapperingLabel.text;
         }
         
     }
 }
 
 
-
+//setting up the tap -- hiding values that do not need to be shown
+// on redesign modify this to be different views with a view selecting between the two...
 - (IBAction)OvoidTap:(id)sender {
     NSLog(@"OvidTap working");
-    _ovoidCheck.hidden = NO;
+    self.ovoidCheck.hidden = NO;
     [self performSegueWithIdentifier:@"Deminsions" sender:sender];
 
     
@@ -71,7 +73,7 @@
 
 - (IBAction)RectangluarTap:(id)sender {
     NSLog(@"RectangluarTap working");
-    _rectangularCheck.hidden = NO;
+    self.rectangularCheck.hidden = NO;
     [self performSegueWithIdentifier:@"Deminsions" sender:sender];
 
     
@@ -80,7 +82,7 @@
 
 - (IBAction)SquareTap:(id)sender {
     NSLog(@"SquareTap working");
-    _squareCheck.hidden = NO;
+    self.squareCheck.hidden = NO;
     [self performSegueWithIdentifier:@"Deminsions" sender:sender];
 
 
@@ -88,7 +90,7 @@
 }
 - (IBAction)TapperingTap:(id)sender {
     NSLog(@"TapperingTap working");
-    _tapperingCheck.hidden = NO;
+    self.tapperingCheck.hidden = NO;
 
     [self performSegueWithIdentifier:@"Deminsions" sender:sender];
 
@@ -96,7 +98,7 @@
 }
 - (IBAction)SquareTapperingTap:(id)sender {
     NSLog(@"SquareTapperingTap working");
-    _squareTapperingCheck.hidden = NO;
+    self.squareTapperingCheck.hidden = NO;
     [self performSegueWithIdentifier:@"Deminsions" sender:sender];
 
     

@@ -24,10 +24,11 @@
     // Do any additional setup after loading the view
     if(self){
         self.faceshapeLabel.text = self.faceLabel;
-        NSLog(@"%@", _faceLabel);
+        NSLog(@"%@", self.faceLabel);
         
         
-        //adds a done button to the heightofcentral and smileline text fields
+        //adds a done button to the heightofcentral and smileline text fields -- this is bad and should be split into
+        // more views, but due to time constaraints I am programming it this way...
         
         UIToolbar* keyboardDoneButtonView = [[UIToolbar alloc] init];
         [keyboardDoneButtonView sizeToFit];
@@ -35,10 +36,10 @@
                                                                        style:UIBarButtonItemStyleBordered target:self
                                                                       action:@selector(doneClicked:)];
         [keyboardDoneButtonView setItems:[NSArray arrayWithObjects:doneButton, nil]];
-        _verticalDeminsionOfOcclusion.inputAccessoryView = keyboardDoneButtonView;
-        _widthOfCentral.inputAccessoryView = keyboardDoneButtonView;
-        _heightOfCentral.inputAccessoryView = keyboardDoneButtonView;
-        _smileLine.inputAccessoryView = keyboardDoneButtonView;
+        self.verticalDeminsionOfOcclusion.inputAccessoryView = keyboardDoneButtonView;
+        self.widthOfCentral.inputAccessoryView = keyboardDoneButtonView;
+        self.heightOfCentral.inputAccessoryView = keyboardDoneButtonView;
+        self.smileLine.inputAccessoryView = keyboardDoneButtonView;
 
     }
     
@@ -58,38 +59,38 @@
 //each text field sender
 
 - (IBAction)VDOtext:(id)sender {
-    _widthOfCentral.hidden = YES;
-    _heightOfCentral.hidden = YES;
-    _orLine.hidden = YES;
-    _WoCLabel.hidden = YES;
-    _LoCLabel.hidden = YES;
+    self.widthOfCentral.hidden = YES;
+    self.heightOfCentral.hidden = YES;
+    self.orLine.hidden = YES;
+    self.WoCLabel.hidden = YES;
+    self.LoCLabel.hidden = YES;
     
     
 }
 - (IBAction)smileline:(id)sender {
-    _widthOfCentral.hidden = YES;
-    _heightOfCentral.hidden = YES;
-    _orLine.hidden = YES;
-    _WoCLabel.hidden = YES;
-    _LoCLabel.hidden = YES;
+    self.widthOfCentral.hidden = YES;
+    self.heightOfCentral.hidden = YES;
+    self.orLine.hidden = YES;
+    self.WoCLabel.hidden = YES;
+    self.LoCLabel.hidden = YES;
     
     
    
 }
 - (IBAction)WOC:(id)sender {
-    _verticalDeminsionOfOcclusion.hidden = YES;
-    _smileLine.hidden = YES;
-    _orLine.hidden = YES;
-    _vdolabel.hidden = YES;
-    _smilelabel.hidden = YES;
+    self.verticalDeminsionOfOcclusion.hidden = YES;
+    self.smileLine.hidden = YES;
+    self.orLine.hidden = YES;
+    self.vdolabel.hidden = YES;
+    self.smilelabel.hidden = YES;
 
 }
 - (IBAction)LOC:(id)sender {
-    _verticalDeminsionOfOcclusion.hidden = YES;
-    _smileLine.hidden = YES;
-    _orLine.hidden = YES;
-    _vdolabel.hidden = YES;
-    _smilelabel.hidden = YES;
+    self.verticalDeminsionOfOcclusion.hidden = YES;
+    self.smileLine.hidden = YES;
+    self.orLine.hidden = YES;
+    self.vdolabel.hidden = YES;
+    self.smilelabel.hidden = YES;
     
 }
 // get everything ready for the end of this view:

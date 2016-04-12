@@ -22,10 +22,10 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    _PosteriorCheck.hidden = YES;
+    self.PosteriorCheck.hidden = YES;
     
     //set image
-    _recommendedPosteriorImages.image = [_degreeImages objectAtIndex:_currentIndex];
+    self.recommendedPosteriorImages.image = [self.degreeImages objectAtIndex:self.currentIndex];
     
 
     
@@ -33,11 +33,11 @@
     
     UISwipeGestureRecognizer *swipeLeft = [[UISwipeGestureRecognizer alloc]initWithTarget:self action:@selector(PosteriorSwipe:)];
     swipeLeft.direction = UISwipeGestureRecognizerDirectionLeft;
-    [_recommendedPosteriorImages addGestureRecognizer:swipeLeft];
+    [self.recommendedPosteriorImages addGestureRecognizer:swipeLeft];
     
     UISwipeGestureRecognizer *swipeRight = [[UISwipeGestureRecognizer alloc]initWithTarget:self action:@selector(PosteriorSwipe:)];
     swipeRight.direction = UISwipeGestureRecognizerDirectionRight;
-    [_recommendedPosteriorImages addGestureRecognizer:swipeRight];
+    [self.recommendedPosteriorImages addGestureRecognizer:swipeRight];
     
 
 
@@ -55,16 +55,16 @@
         NSLog(@"%@", sender);
         //now to establish where it is going
         Review *review = (Review *) segue.destinationViewController;
-        review.selectedDegree = _imageNames[_currentIndex];
+        review.selectedDegree = self.imageNames[self.currentIndex];
         // [germanMakes arrayByAddingObjectsFromArray:ukMakes];
-        review.reviewArray = [_reviewArray arrayByAddingObject: _imageNames[_currentIndex]];
+        review.reviewArray = [self.reviewArray arrayByAddingObject: self.imageNames[self.currentIndex]];
         
     }
 }
 -(void)showImageAtIndex:(NSInteger)index
 {
     
-    _recommendedPosteriorImages.image = [_degreeImages objectAtIndex:_currentIndex] ;
+    self.recommendedPosteriorImages.image = [self.degreeImages objectAtIndex:self.currentIndex] ;
     
     
 }
@@ -72,7 +72,7 @@
 
 
 - (IBAction)PosteriorSwipe:(UISwipeGestureRecognizer *)sender {
-    NSInteger index = _currentIndex;
+    NSInteger index = self.currentIndex;
     if (sender.direction == UISwipeGestureRecognizerDirectionLeft)
     {
         index++;
@@ -82,22 +82,22 @@
         index--;
     }
     
-    if (index >= 0 && index < ([_degreeImages count] ))
+    if (index >= 0 && index < ([self.degreeImages count] ))
     {
         NSLog(@"Index %ld", index);
-        _currentIndex = index;
-        [self showImageAtIndex:_currentIndex];
+        self.currentIndex = index;
+        [self showImageAtIndex:self.currentIndex];
     }
     else
     {
         NSLog(@"Reached the end, swipe in opposite direction");
-        index = _currentIndex;
+        index = self.currentIndex;
     }
 
 }
 
 - (IBAction)PosteriorTap:(id)sender {
-    _PosteriorCheck.hidden = NO;
+    self.PosteriorCheck.hidden = NO;
     NSLog(@"PostTap working");
 
     [self performSegueWithIdentifier:@"Review" sender:sender];

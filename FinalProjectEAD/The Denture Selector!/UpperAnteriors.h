@@ -12,6 +12,6 @@
 @property (weak, nonatomic) IBOutlet UIImageView *UpperAnteriorImage;
 @property (weak, nonatomic) IBOutlet UIImageView *MaxillaryCheck;
 @property (strong, nonatomic) NSArray *ImageArray;
-@property  NSInteger currentIndex;// index for the image array
+@property (nonatomic) NSInteger currentIndex;// index for the image array
 @property (strong, nonatomic) NSArray *maxNameArray;
 @end
